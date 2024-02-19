@@ -1,0 +1,35 @@
+---
+title: "read_dataset"
+author: "Bo"
+date: "2024-02-19"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# load library  
+```{r}
+library(ggplot2)
+library(dplyr)
+library(haven)
+library(tidyr)
+library(readr)
+```
+
+# read dataset  
+```{r}
+scd_data <- read_sas("/Users/bo/Desktop/2024spring/BIS687/sickle_cell/data/curesc_year2_v2.sas7bdat")
+#remove variables that had a high missing rate, defined as greater than 80%
+scd_data <- 
+  scd_data %>% mutate(across(everything(), ~na_if(.x, 99)))
+scd_data <- 
+  scd_data %>% mutate(across(everything(), ~na_if(.x, 98)))
+scd_data_clean <-
+  scd_data %>% select_if(~sum(is.na(.)) / nrow(scd_data) <= 0.2)
+#remove variables that is constant for all patients
+scd_data_clean <- scd_data_clean %>%
+  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+```
+
