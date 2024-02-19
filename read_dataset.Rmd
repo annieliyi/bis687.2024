@@ -101,10 +101,9 @@ meta_yr3_lst <- lapply(meta_yr3_lst, function(data_i){
 
 ```{r}
 scd_data_yr2_label <- lapply(colnames(scd_data_yr2), function(col_i){
-  print(col_i)
   label_df <- meta_yr2[which(tolower(meta_yr2$`Variable name`) == tolower(col_i)), ]
   
-  if(nrow(label_df) > 0){
+  if(nrow(label_df) > 0 & !all(is.na(label_df$Value))){
     ret <- scd_data_yr2[, col_i, drop = T] 
     ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
     names(ret) <- col_i
