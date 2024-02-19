@@ -33,3 +33,13 @@ scd_data_clean <- scd_data_clean %>%
   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
 ```
 
+```{r}
+#remove useless variables
+scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
+```
+
+```{r}
+#time to events variables:
+INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV
+```
+

@@ -35,10 +35,13 @@ Do this last.
 
 \pagebreak
 
-# Specfic Aims
+# Specfic Aims 
 
 At the highest level, what is the area the study focuses on?
-
+- Descriptive analysis on enrolled patients on HCT/...
+- Survival analysis
+  - Time from HCT to six different endpoints
+- R shiny for results visulazation
 What have I done that is relevant to the study?
 
 What are the hypotheses the initial work has generated, which will be the focus of the study.
