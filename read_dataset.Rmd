@@ -113,7 +113,25 @@ scd_data_yr2_label <- lapply(colnames(scd_data_yr2), function(col_i){
   ret
 })
 
-do.call(cbind, scd_data_yr2_label)
+scd_data_yr2_label <- do.call(cbind, scd_data_yr2_label)
+```
+
+
+```{r}
+scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
+  label_df <- meta_yr3[which(tolower(meta_yr3$`Variable name`) == tolower(col_i)), ]
+  
+  if(nrow(label_df) > 0 & !all(is.na(label_df$Value))){
+    ret <- scd_data_yr3[, col_i, drop = T] 
+    ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
+    names(ret) <- col_i
+  } else{
+    ret <- scd_data_yr3[, col_i]
+  }
+  ret
+})
+
+scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
 ```
 
 
