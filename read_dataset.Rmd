@@ -16,12 +16,16 @@ library(dplyr)
 library(haven)
 library(tidyr)
 library(readr)
+library(stringr)
 ```
 
 # read dataset  
 ```{r}
-scd_data <- read_sas("/Users/bo/Desktop/2024spring/BIS687/sickle_cell/data/curesc_year2_v2.sas7bdat")
+scd_data_yr2 <- read_sas("data/curesc_year2_v2.sas7bdat")
+scd_data_yr3 <- read_sas("data/curesc_year3_v3.sas7bdat")
 #remove variables that had a high missing rate, defined as greater than 80%
+
+
 scd_data <- 
   scd_data %>% mutate(across(everything(), ~na_if(.x, 99)))
 scd_data <- 
@@ -33,6 +37,88 @@ scd_data_clean <- scd_data_clean %>%
   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
 ```
 
+
+```{r}
+scd_data_yr2 <- scd_data_yr2 %>% 
+  #mutate(across(everything(), ~na_if(.x, 99))) %>%
+  #mutate(across(everything(), ~na_if(.x, 98))) %>%
+  select_if(~sum(is.na(.)) / nrow(scd_data_yr2) <= 0.2) %>%
+  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+
+
+scd_data_yr3 <- scd_data_yr3 %>% 
+  #mutate(across(everything(), ~na_if(.x, 99))) %>%
+  #mutate(across(everything(), ~na_if(.x, 98))) %>%
+  select_if(~sum(is.na(.)) / nrow(scd_data_yr3) <= 0.2) %>%
+  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+```
+
+```{r}
+meta_yr2 <- readxl::read_excel("data/Codebook 2020 Year 2.xlsx", 
+                                         col_names = T)
+
+meta_yr2 <- meta_yr2 %>% 
+  fill(`Variable name`, .direction = "down")
+
+cutoffs_2 <- stringr::str_which(meta_yr2$`Variable name`, ":")
+cutoff_names2 <- str_replace(meta_yr2$`Variable name`[cutoffs_2], ":", "")
+
+group_yr2 <- c(rep(cutoff_names2[1], cutoffs_2[2] - 1), 
+               rep(cutoff_names2[2], cutoffs_2[3] - cutoffs_2[2]), 
+               rep(cutoff_names2[3], nrow(meta_yr2) -  cutoffs_2[3] + 1))
+
+meta_yr2_lst <- split(meta_yr2, group_yr2)
+
+
+meta_yr2_lst <- lapply(meta_yr2_lst, function(data_i){
+  data_name <- str_replace(data_i$`Variable name`[1], ":", "")
+  data <- data_i[-1, ]
+  return(data)
+})
+```
+
+```{r}
+meta_yr3 <- readxl::read_excel("data/Codebook 2021 Year 3.xlsx", 
+                                         col_names = T)
+
+cutoffs_3 <- stringr::str_which(meta_yr3$`Variable name`, ":")
+cutoff_names3 <- str_replace(meta_yr3$`Variable name`[cutoffs_3], ":", "")
+
+group_yr3 <- c(rep(cutoff_names3[1], cutoffs_3[2] - 1), 
+               rep(cutoff_names3[2], cutoffs_3[3] - cutoffs_3[2]), 
+               rep(cutoff_names3[3], nrow(meta_yr3) -  cutoffs_3[3] + 1))
+
+meta_yr3_lst <- split(meta_yr3, group_yr3)
+
+
+meta_yr3_lst <- lapply(meta_yr3_lst, function(data_i){
+  data_name <- str_replace(data_i$`Variable name`[1], ":", "")
+  data <- data_i[-1, ]
+  return(data)
+})
+```
+
+
+```{r}
+scd_data_yr2_label <- lapply(colnames(scd_data_yr2), function(col_i){
+  print(col_i)
+  label_df <- meta_yr2[which(tolower(meta_yr2$`Variable name`) == tolower(col_i)), ]
+  
+  if(nrow(label_df) > 0){
+    ret <- scd_data_yr2[, col_i, drop = T] 
+    ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
+    names(ret) <- col_i
+  } else{
+    ret <- scd_data_yr2[, col_i]
+  }
+  ret
+})
+
+do.call(cbind, scd_data_yr2_label)
+```
+
+
+
 ```{r}
 #remove useless variables
 scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
@@ -40,6 +126,6 @@ scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
 
 ```{r}
 #time to events variables:
-INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV
+#INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV
 ```
 
