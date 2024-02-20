@@ -17,28 +17,20 @@ library(haven)
 library(tidyr)
 library(readr)
 library(stringr)
+library(readxl)
+library(gt)
 ```
 
 # read dataset  
 ```{r}
 scd_data_yr2 <- read_sas("data/curesc_year2_v2.sas7bdat")
 scd_data_yr3 <- read_sas("data/curesc_year3_v3.sas7bdat")
-#remove variables that had a high missing rate, defined as greater than 80%
 
-
-scd_data <- 
-  scd_data %>% mutate(across(everything(), ~na_if(.x, 99)))
-scd_data <- 
-  scd_data %>% mutate(across(everything(), ~na_if(.x, 98)))
-scd_data_clean <-
-  scd_data %>% select_if(~sum(is.na(.)) / nrow(scd_data) <= 0.2)
-#remove variables that is constant for all patients
-scd_data_clean <- scd_data_clean %>%
-  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
 ```
 
 
 ```{r}
+#remove variables that had a high missing rate, defined as greater than 80%
 scd_data_yr2 <- scd_data_yr2 %>% 
   #mutate(across(everything(), ~na_if(.x, 99))) %>%
   #mutate(across(everything(), ~na_if(.x, 98))) %>%
@@ -261,7 +253,7 @@ summarize_data(scd_data_yr3_label, "DUMMYID")
 
 ```{r}
 #remove useless variables
-scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
+#scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
 ```
 
 ```{r}
