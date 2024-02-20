@@ -108,6 +108,7 @@ scd_data_yr2_label <- lapply(colnames(scd_data_yr2), function(col_i){
     ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
     names(ret) <- col_i
   } else{
+    if(nrow(label_df) == 0){print(col_i)}
     ret <- scd_data_yr2[, col_i]
   }
   ret
@@ -126,6 +127,7 @@ scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
     ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
     names(ret) <- col_i
   } else{
+    if(nrow(label_df) == 0){print(col_i)}
     ret <- scd_data_yr3[, col_i]
   }
   ret
