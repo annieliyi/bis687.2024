@@ -57,9 +57,17 @@ What are the hypotheses the initial work has generated, which will be the focus 
 
 Specific Aims:  
 
-- Descriptive Analysis of Enrolled Patients  
+- Descriptive Analysis of Enrolled Patients   
+
+This aim involves a detailed examination of the demographic and clinical characteristics of patients who have undergone HCT and other cellular therapies. By analyzing factors such as age, gender, diagnosis, type of transplant, and donor characteristics, we aim to identify patterns and trends that could inform future patient care strategies.
+
 - Survival Analysis  
+
+We will perform survival analysis to assess the time from HCT to various endpoints, including graft-versus-host disease (GVHD), relapse, infection, and overall survival. This analysis will help identify key predictors of outcomes and potentially modifiable factors that could improve patient survival and quality of life.
+
 - Development of an R Shiny Application for Results Visualization
+
+To make the findings accessible and actionable, an R Shiny application will be developed. This interactive tool will allow users to explore the data dynamically, visualize survival curves, compare outcomes across different patient groups, and potentially identify new areas for research or intervention.
 
 What comes next? What will the impact be of achieving the specific aims?  
 
@@ -90,7 +98,6 @@ How will this change research in the domain?
 Promoting Personalized Medicine: The insights gained from this study could advance the field toward more personalized medicine approaches in HCT and cellular therapies. Understanding the specific factors that influence individual patient outcomes can lead to more tailored and effective treatment plans, ultimately improving the overall success rate of these therapies.
 
 #### Important significance topic.
-
 
 
 #### Another important significance topic.
@@ -136,13 +143,13 @@ How will they be put together?
 
 ## Specific Aim 1: Descriptive Analysis of Enrolled Patients  
 
-This aim involves a detailed examination of the demographic and clinical characteristics of patients who have undergone HCT and other cellular therapies. By analyzing factors such as age, gender, diagnosis, type of transplant, and donor characteristics, we aim to identify patterns and trends that could inform future patient care strategies.
+
 
 ## Specific Aim 2: Survival Analysis  
-We will perform survival analysis to assess the time from HCT to various endpoints, including graft-versus-host disease (GVHD), relapse, infection, and overall survival. This analysis will help identify key predictors of outcomes and potentially modifiable factors that could improve patient survival and quality of life.
+
 
 ## Specific Aim 3: Development of an R Shiny Application for Results Visualization  
-To make the findings accessible and actionable, an R Shiny application will be developed. This interactive tool will allow users to explore the data dynamically, visualize survival curves, compare outcomes across different patient groups, and potentially identify new areas for research or intervention.
+
 
 
 Hypothesis:  What is being tested?

@@ -43,6 +43,8 @@ scd_data_yr3 <- scd_data_yr3 %>%
   #mutate(across(everything(), ~na_if(.x, 98))) %>%
   select_if(~sum(is.na(.)) / nrow(scd_data_yr3) <= 0.2) %>%
   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+
+bind_rows(scd_data_yr2[which(scd_data_yr2$DUMMYID == 75505098),],scd_data_yr3[which(scd_data_yr2$DUMMYID == 75505098),])
 ```
 
 ```{r}
@@ -258,6 +260,15 @@ summarize_data(scd_data_yr3_label, "DUMMYID")
 
 ```{r}
 #time to events variables:
-#INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV
+#INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV,death
+columns_to_check <-toupper(c("intxsurv", "intxgf", "intxanc", "intxplatelet", "intxagvhd", "intxcgvhd", "intxptld", "intxscdmal", "intxintub", "intxvod", "intxtma", "intxadial", "intxckd", "intxarrhyth", "intxchf", "intxinfap", "intxhtn", "intxdvt", "intxcns", "intxenc", "intxneuro", "intxseiz", "intxstroke", "intxdiab", "intxghd", "intxhypo", "intxpanc", "intxgod", "intxcyst", "intxavn", "intxosteo", "intxdepr", "intxanx", "intxptsd", "intxcata", "intxhylip", "intxiron", "intxmucos", "intxothorgsp"))
+dataset_column_names <- colnames(scd_data_yr3)
+
+columns_exist <- columns_to_check %in% dataset_column_names
+
+existing_columns <- columns_to_check[columns_exist]
+print(existing_columns)
+columns_exist_meta <- tolower(existing_columns)
+time_to_event <- meta_yr3[which(meta_yr3$`Variable name` %in% columns_exist_meta),]
 ```
 
