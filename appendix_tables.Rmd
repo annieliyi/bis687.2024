@@ -1,0 +1,141 @@
+---
+title: "appendix_tables"
+author: "Wanjing Chen"
+date: "2024-02-21"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+
+```{r, echo=F, message=F, warning=F}
+library(ggplot2)
+library(dplyr)
+library(haven)
+library(tidyr)
+library(readr)
+library(stringr)
+library(readxl)
+library(gt)
+library(kableExtra)
+```
+
+```{r, echo=F, message = F, warning=F}
+scd_data_yr2 <- read_sas("data/curesc_year2_v2.sas7bdat")
+scd_data_yr3 <- read_sas("data/curesc_year3_v3.sas7bdat")
+```
+
+
+
+```{r, echo=F, eval=F, message = F, warning=F}
+bind_rows(scd_data_yr2[which(scd_data_yr2$DUMMYID == 75505098),],scd_data_yr3[which(scd_data_yr2$DUMMYID == 75505098),])
+
+yr2col_idx <- which(!colnames(scd_data_yr2) %in%  colnames(scd_data_yr3))
+colnames(scd_data_yr2)[yr2col_idx]
+scd_data_yr2[, yr2col_idx] #both contain more than 50% NA
+```
+
+```{r, echo=F, message=F, warning=F}
+meta_yr3 <- readxl::read_excel("data/Codebook 2021 Year 3.xlsx", 
+                                         col_names = T)
+meta_yr3 <- meta_yr3 %>% 
+  fill(`Variable name`, .direction = "down")
+
+#cutoffs_3 <- stringr::str_which(meta_yr3$`Variable name`, ":")
+cutoffs_3 <- which(rowSums(!is.na(meta_yr3)) == 1) #these are section titles
+
+cutoff_names3 <- str_replace(meta_yr3$`Variable name`[cutoffs_3], ":", "")
+
+group_yr3 <- c(rep(cutoff_names3[1], cutoffs_3[2] - 1), 
+               rep(cutoff_names3[2], cutoffs_3[3] - cutoffs_3[2]), 
+               rep(cutoff_names3[3], cutoffs_3[4] - cutoffs_3[3]), 
+               rep(cutoff_names3[4], cutoffs_3[5] - cutoffs_3[4]), 
+               rep(cutoff_names3[5], nrow(meta_yr3) -  cutoffs_3[5] + 1))
+
+meta_yr3_lst <- split(meta_yr3, group_yr3)
+
+
+meta_yr3_lst <- lapply(meta_yr3_lst, function(data_i){
+  data_name <- str_replace(data_i$`Variable name`[1], ":", "")
+  data <- data_i[-1, ]
+  return(data)
+})
+
+meta_yr3_indata_lst <- lapply(meta_yr3_lst, function(data_i){
+  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "RACEGP")
+  data <- data_i[indata_idx, ]
+  return(unique(data$`Variable name`))
+})
+```
+
+
+```{r, echo=F, message = F}
+#remove variables that had a high missing rate, defined as greater than 80% (won't apply to outcome data, where missing is considered as censoring)
+# scd_data_yr2 <- scd_data_yr2 %>% 
+#   mutate(across(everything(), ~na_if(.x, 99))) %>%
+#   mutate(across(everything(), ~na_if(.x, 98))) %>%
+#   mutate(across(everything(), ~na_if(.x, -9))) %>%
+#   select_if(~sum(is.na(.)) / nrow(scd_data_yr2) <= 0.2) %>%
+#   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+
+outcomevars <- meta_yr3_indata_lst$Outcomes
+outcomevar_idx <- which(tolower(colnames(scd_data_yr3)) %in% tolower(outcomevars))
+
+
+crfvars <- meta_yr3_indata_lst$`CRF data collection track only`
+crf_idx <-  which(tolower(colnames(scd_data_yr3)) %in% tolower(crfvars))
+
+scd_data_yr3 <- scd_data_yr3 %>% 
+  select(-all_of(crf_idx)) %>%
+  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, 99))) %>%
+  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, 98))) %>%
+  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, -9))) %>%
+  select_if(~sum(is.na(.)) / nrow(scd_data_yr3) <= 0.2) %>%
+  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
+
+
+
+meta_yr3_indata_lst_final <- setNames(lapply(1:length(meta_yr3_lst), function(i){
+  data_i <- meta_yr3_lst[[i]]
+  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "RACEGP")
+  data <- data_i[indata_idx, c("Variable name", "Description")] %>%
+    drop_na() %>%
+    distinct() %>%
+    mutate(Category = names(meta_yr3_lst)[i]) %>%
+    select(Category, everything())
+  return(data)
+}), names(meta_yr3_lst))
+
+var_full <- data.frame(do.call(rbind, meta_yr3_indata_lst_final))
+
+pred_full <- var_full %>% filter(Category != "Outcomes")
+time_full <- var_full %>% 
+  filter(Category == "Outcomes" & 
+           str_detect(Description, "^Time"))
+other_outcome_full <-  var_full %>% 
+  filter(Category == "Outcomes" & 
+           !str_detect(Description, "^Time"))
+
+
+pred_full %>% knitr::kable(caption = "List of Predictors")%>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(ncol(pred_full), border_right = TRUE) 
+ 
+time_full %>% knitr::kable(caption = "List of Time-to-Event Variables")%>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(ncol(pred_full), border_right = TRUE) 
+other_outcome_full %>% 
+  knitr::kable(caption = "List of Outcome Varaibles (Exclude Time-to-Event)")%>% 
+  column_spec(1, border_left = TRUE) %>%
+  column_spec(ncol(pred_full), border_right = TRUE) 
+```
+
