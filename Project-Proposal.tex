@@ -163,7 +163,14 @@ potential cure for SCD. Nevertheless, post-HCT SCD patients continue to
 face severe health challenges because HCT is associated with
 life-threatening complications most of which occur within the first 2
 years after transplantation such as graft-versus-host disease (GVHD) and
-mortality.
+mortality. However, there is limited study on exploring features of
+post-HCT SGD patients that affect the outcomes for time to significant
+endpoints including last contact or death, graft failure, neutrophil
+engraftment, platelet recovery, acute and chronic graft-vs-host disease
+(GVHD), post-transplant lymphoproliferative disorder (PTLD), and second
+malignancy. Moreover, no standardized data analysis platforms have been
+established for clinical investigators to efficiently interact with and
+generate insight from the database of post-HCT SCD patients.
 
 \hypertarget{specfic-aims}{%
 \section{Specfic Aims}\label{specfic-aims}}
@@ -173,13 +180,15 @@ mortality.
 
 We will perform exploratory analyses on variables included in the
 datasets to obtain an overview of the baseline characteristics of
-patients who received HCT. Specifically, the dataset categorizes the
-variables into 3 categories: disease-related, patient-related, and
-transplant-related. By summarizing information on variables in the
-dataset, we expect to learn the distribution of baseline variables that
-could facilitate further processing of the data, and provide initial
-insights on identifying important predictors contributing to predicting
-the clinical outcome e of patients.
+patients who received HCT and visually explore the features that are
+potentially associated with the survival outcomes of the patients.
+Specifically, the dataset categorizes the variables into 3 categories:
+disease-related, patient-related, and transplant-related. By summarizing
+information on variables in the dataset, we expect to learn the
+distribution of baseline variables that could facilitate further
+processing of the data, and provide initial insights on identifying
+important predictors contributing to predicting the clinical outcome e
+of patients.
 
 \hypertarget{survival-analysis}{%
 \subsection{Survival Analysis}\label{survival-analysis}}
@@ -188,22 +197,24 @@ We will perform a survival analysis to assess the time from HCT to 8
 endpoints, including last contact or death, graft failure, neutrophil
 engraftment, platelet recovery, acute and chronic graft-vs-host disease
 (GVHD), post-transplant lymphoproliferative disorder (PTLD), and second
-malignancy. These analyses will help identify key predictors of outcomes
-and potential factors that could enhance the quality of care for
-patients undergoing HCT treatment.
+malignancy. These analyses will help identify key predictors of survival
+outcomes which serve as potential factors that could enhance the quality
+of care for patients undergoing HCT treatment.
 
 \hypertarget{shiny-app-development}{%
 \subsection{Shiny App Development}\label{shiny-app-development}}
 
-To make the findings accessible and actionable, an R Shiny application
-will be developed. This interactive tool will allow users to explore the
-data dynamically, visualize survival curves, compare outcomes across
-different patient groups, and potentially identify new areas for
-research or intervention. In order to enhance the understanding and
-management of Sickle Cell Disease (SCD) post-hematopoietic cell
-transplantation (HCT), we propose the development of an R Shiny
-application, a crucial tool designed to visualize and interpret complex
-datasets.
+Finally, an R Shiny application will be developed to not only make
+findings interactive and accessible for clinical investigators but also
+serve as a standardized platform to generate results accordingly with a
+more updated database in the future. This interactive tool will allow
+users to explore the data dynamically, visualize survival curves,
+compare outcomes across different patient groups, and potentially
+identify new areas for research or intervention. In order to enhance the
+understanding and management of Sickle Cell Disease (SCD)
+post-hematopoietic cell transplantation (HCT), we propose the
+development of an R Shiny application, a crucial tool designed to
+visualize and interpret complex datasets.
 
 \hypertarget{research-strategy}{%
 \section{Research Strategy}\label{research-strategy}}
@@ -376,6 +387,10 @@ crucial for several reasons.
   Kaplan-Meier (KM) Survival Curves: For each of the eight endpoints, KM
   survival curves will be generated to visualize the unadjusted
   probability of reaching each endpoint over time post-HCT.
+\item
+  *During this approach, the proportional hazard assumption will be
+  verified. If the assumption fails to hold, random survival forest will
+  be conducted instead.
 \end{itemize}
 
 \textbf{Interpretation of Results: } In our analysis using the Cox
