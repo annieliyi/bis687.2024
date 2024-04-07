@@ -1,3 +1,8 @@
+library(purrr)
+library(dplyr)
+library(tidyr)
+library(stringr)
+
 summarize_data <- function(df, id_cols, factor_cols, 
                            label_vec, tbl_name){
   num_vars <- purrr::map_lgl(df %>% select(-all_of(id_cols),
@@ -34,6 +39,8 @@ summarize_data <- function(df, id_cols, factor_cols,
       select(-var) %>%
       gt::gt(rowname_col = "var_lbl", 
              caption = paste0(tbl_name, " : Continuous Variable Summary"))
+    
+    gt::gtsave(ret1,  paste0(tbl_name, "_Cont_Sum.png"))
   }
   
   if(length(cat_vars)== 0){
@@ -41,7 +48,7 @@ summarize_data <- function(df, id_cols, factor_cols,
   } else{
     cat_sum <- df %>%
       select(all_of(cat_vars)) %>%
-      mutate(across(c(cat_vars), as.factor))
+      mutate(across(all_of(cat_vars), as.factor))
     
     cat_sum_wide <- cat_sum %>%
       mutate(id = row_number())%>%
@@ -87,6 +94,8 @@ summarize_data <- function(df, id_cols, factor_cols,
       gt::gt(rowname_col = "cat_label", 
              groupname_col = "group_lbl", 
              caption = paste0(tbl_name, " : Categorical Variable Summary"))
+    
+    gt::gtsave(ret2,  paste0(tbl_name, "_Cat_Sum.png"))
     
   }
   return(list(ret1, ret2))

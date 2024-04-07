@@ -2,13 +2,21 @@
 title: "aim1_tables"
 author: "Wanjing Chen"
 date: "2024-04-07"
-output: html_document
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+header-includes: "\\usepackage{booktabs} - \\usepackage{longtable}"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+```{r}
+library(dplyr)
+```
 
 
 ```{r}
@@ -62,13 +70,11 @@ data_summary <- lapply(seq_len(length(df_lst)), function(i){
   if("DUMMYID" %in% colnames(df_i)){
     id = c(id, "DUMMYID")
   }
-  summarize_data(df_i, id, 
+  ret <- summarize_data(df_i, id, 
                  exclude, naming_vec, 
                  names(df_lst)[i])
+  
 })
-
-
-data_summary
 
 
 ```
