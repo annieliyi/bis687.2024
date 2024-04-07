@@ -30,6 +30,12 @@
 \urlstyle{same}  % don't use monospace font for urls
 \usepackage{natbib}
 \bibliographystyle{plainnat}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -44,6 +50,20 @@
     \author{}
     \date{}
   
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 
 %%%%%%%%%%
 % personal preamble edits here
@@ -106,9 +126,6 @@
 
 \begin{document}
 
-Advancing Outcomes in Hematopoietic Cell Transplantation: A
-Comprehensive Analysis and Visualization Project
-
 \hypertarget{project-summaryabstract}{%
 \section{Project Summary/Abstract}\label{project-summaryabstract}}
 
@@ -128,61 +145,76 @@ cellular therapies.
 
 \pagebreak
 
+\hypertarget{project-narrative}{%
+\section{Project Narrative}\label{project-narrative}}
+
+Sickle cell disease (SCD) is a group of inherited red blood cell
+disorders affecting millions of people throughout the world. In someone
+with Sickle Cell Disease (SCD), their red blood cells contain abnormal
+hemoglobin, causing them to become misshapen, resembling a sickle. These
+cells die prematurely, constantly decreasing the body's red blood cell
+count. They can also block blood flow in small vessels, triggering pain,
+and severe complications like infections, acute chest syndrome, and
+stroke. Despite a variety of strategies including supportive care, drug
+therapies, and red blood cell transfusions are able to potentially
+alleviate symptoms and extend lifespan of SGD patients, allogeneic
+hematopoietic cell transplantation (HCT) is the only established
+potential cure for SCD. Nevertheless, post-HCT SCD patients continue to
+face severe health challenges because HCT is associated with
+life-threatening complications most of which occur within the first 2
+years after transplantation such as graft-versus-host disease (GVHD) and
+mortality. However, there is limited study on exploring features of
+post-HCT SGD patients that affect the outcomes for time to significant
+endpoints including last contact or death, graft failure, neutrophil
+engraftment, platelet recovery, acute and chronic graft-vs-host disease
+(GVHD), post-transplant lymphoproliferative disorder (PTLD), and second
+malignancy. Moreover, no standardized data analysis platforms have been
+established for clinical investigators to efficiently interact with and
+generate insight from the database of post-HCT SCD patients.
+
 \hypertarget{specfic-aims}{%
 \section{Specfic Aims}\label{specfic-aims}}
 
-At the highest level, what is the area the study focuses on?
+\hypertarget{exploratory-data-analysis}{%
+\subsection{Exploratory Data Analysis}\label{exploratory-data-analysis}}
 
-The study focuses on hematopoietic cell transplantation (HCT). It aims
-to analyze the outcomes, survival rates, and other relevant data of
-patients enrolled in the CIBMTR research database. This area is critical
-for advancing the understanding and effectiveness of HCT in treating
-sickle cell diseases, with the overarching goal of improving patient
-outcomes and the success of this treatment.
+We will perform exploratory analyses on variables included in the
+datasets to obtain an overview of the baseline characteristics of
+patients who received HCT and visually explore the features that are
+potentially associated with the survival outcomes of the patients.
+Specifically, the dataset categorizes the variables into 3 categories:
+disease-related, patient-related, and transplant-related. By summarizing
+information on variables in the dataset, we expect to learn the
+distribution of baseline variables that could facilitate further
+processing of the data, and provide initial insights on identifying
+important predictors contributing to predicting the clinical outcome e
+of patients.
 
-What have I done that is relevant to the study?
+\hypertarget{survival-analysis}{%
+\subsection{Survival Analysis}\label{survival-analysis}}
 
-\begin{itemize}
-\tightlist
-\item
-  clinical research\\
-\item
-  data management\\
-\item
-  statistical analysis\\
-\item
-  develop R Shiny application
-\end{itemize}
+We will perform a survival analysis to assess the time from HCT to 8
+endpoints, including last contact or death, graft failure, neutrophil
+engraftment, platelet recovery, acute and chronic graft-vs-host disease
+(GVHD), post-transplant lymphoproliferative disorder (PTLD), and second
+malignancy. These analyses will help identify key predictors of survival
+outcomes which serve as potential factors that could enhance the quality
+of care for patients undergoing HCT treatment.
 
-What are the hypotheses the initial work has generated, which will be
-the focus of the study.
+\hypertarget{shiny-app-development}{%
+\subsection{Shiny App Development}\label{shiny-app-development}}
 
-Specific Aims:
-
-\begin{itemize}
-\tightlist
-\item
-  Descriptive Analysis of Enrolled Patients\\
-\item
-  Survival Analysis\\
-\item
-  Development of an R Shiny Application for Results Visualization
-\end{itemize}
-
-What comes next? What will the impact be of achieving the specific aims?
-
-\begin{itemize}
-\tightlist
-\item
-  Clinical Practice Implications: Findings could inform clinical
-  practice by identifying key factors affecting patient outcomes,
-  potentially leading to updated guidelines or strategies for patient
-  management post-HCT.
-\item
-  Future Research Directions: The project may highlight gaps in the
-  current knowledge or suggest hypotheses for future studies, thereby
-  guiding subsequent research efforts in HCT and cellular therapy.
-\end{itemize}
+Finally, an R Shiny application will be developed to not only make
+findings interactive and accessible for clinical investigators but also
+serve as a standardized platform to generate results accordingly with a
+more updated database in the future. This interactive tool will allow
+users to explore the data dynamically, visualize survival curves,
+compare outcomes across different patient groups, and potentially
+identify new areas for research or intervention. In order to enhance the
+understanding and management of Sickle Cell Disease (SCD)
+post-hematopoietic cell transplantation (HCT), we propose the
+development of an R Shiny application, a crucial tool designed to
+visualize and interpret complex datasets.
 
 \hypertarget{research-strategy}{%
 \section{Research Strategy}\label{research-strategy}}
@@ -190,259 +222,349 @@ What comes next? What will the impact be of achieving the specific aims?
 \hypertarget{significance}{%
 \subsection{Significance}\label{significance}}
 
-Reintroduce the domain.
-
-The domain of Hematopoietic Cell Transplantation (HCT) represents a
-pivotal area in the treatment of a variety of hematologic malignancies,
-immune deficiencies, and certain non-malignant disorders. These
-therapies offer potentially curative treatments for patients with
-conditions such as leukemia, lymphoma, myeloma, and sickle cell disease,
-among others. The complexity of HCT processes, including donor
-selection, conditioning regimens, and post-transplant care, necessitates
-ongoing research to optimize patient outcomes and minimize
-complications.
-
-What is the impact/significance of what is done now?
-
-\begin{itemize}
-\item
-  Improving Patient Outcomes: By conducting a comprehensive analysis of
-  patient data, this study aims to uncover patterns and predictors of
-  success in HCT and cellular therapies. Identifying factors that
-  influence outcomes such as survival rates, complication rates, and
-  quality of life post-transplant can lead to more personalized and
-  effective treatment strategies.
-\item
-  Innovative Data Visualization: The development of an R Shiny
-  application for visualizing the results offers a novel tool for
-  clinicians and researchers. This interactive platform will facilitate
-  a deeper understanding of the data, enabling users to explore the
-  impact of various factors on patient outcomes dynamically.
-\end{itemize}
-
-What does the study do?
-
-\begin{itemize}
-\tightlist
-\item
-  Bridges the Gap Between Data and Practice: By integrating descriptive
-  and survival analyses with advanced data visualization techniques, the
-  study bridges the gap between raw clinical data and actionable
-  insights. It provides a user-friendly interface for exploring complex
-  datasets, making it easier to derive meaningful conclusions that can
-  inform clinical decisions.\\
-\item
-  Facilitates Evidence-Based Decisions: The study empowers clinicians
-  and researchers to make evidence-based decisions regarding HCT and
-  cellular therapy practices. By providing access to comprehensive
-  analyses and interactive tools, it supports a more nuanced
-  understanding of how different variables affect patient outcomes.
-\end{itemize}
-
-How will this change research in the domain?
-
-Promoting Personalized Medicine: The insights gained from this study
-could advance the field toward more personalized medicine approaches in
-HCT and cellular therapies. Understanding the specific factors that
-influence individual patient outcomes can lead to more tailored and
-effective treatment plans, ultimately improving the overall success rate
-of these therapies.
-
-\hypertarget{important-significance-topic.}{%
-\paragraph{Important significance
-topic.}\label{important-significance-topic.}}
-
-\hypertarget{another-important-significance-topic.}{%
-\paragraph{Another important significance
-topic.}\label{another-important-significance-topic.}}
+Recognizing the significance of HCT regarding the curation of SGD and
+the post-HCT potential health obstacles, our team aims to explore
+crucial patient-related, disease-related, and transplant-related factors
+contributing to clinical outcomes after HCT among SGD patients by
+utilizing the database from Center for International Blood and Marrow
+Transplant Research (CIBMTR) in 2021. The project initiative is to
+specify the granularity for both evaluating success and subsequent
+health threats post-HCT and assist clinical professionals with the
+decision on establishing a more comprehensive treatment plan for SGD
+patients by taking key patient-related, disease-related, and
+transplant-related features into consideration.
 
 \hypertarget{innovation}{%
 \subsection{Innovation}\label{innovation}}
 
-What is different/new/novel about this project?
-
 \begin{itemize}
 \item
-  Comprehensive Integration of Descriptive and Survival Analyses: While
-  many studies focus on either descriptive analyses of patient
-  demographics or survival analyses separately, this project
-  innovatively combines both. This dual approach allows for a more
-  nuanced understanding of how specific patient characteristics impact
-  outcomes post-transplantation.
-\item
-  Development of an Interactive R Shiny Application for Data
-  Visualization:
+  Analysis Innovation
 
-  \begin{itemize}
-  \tightlist
-  \item
-    Dynamic, User-Driven Exploration: Unlike static reports or
-    publications, the R Shiny application allows users to interact with
-    the data in real-time, adjusting parameters to explore different
-    scenarios and outcomes. This level of interactivity is novel in the
-    field of HCT research.
-  \item
-    Accessibility to Non-Statisticians: By providing a user-friendly
-    interface, the application makes complex statistical analyses
-    accessible to clinicians, researchers, and potentially patients who
-    may not have expertise in data analysis. This democratization of
-    data is a significant innovation.
-  \end{itemize}
+  For the survival analysis of this project, the targeted time-to-events
+  include not only outcomes with implications of HCT failure such as
+  ``time to GVHD'' and ``time to PTLD(Post-transplant
+  lymphoproliferative diseases)'' but also implications of HCT success
+  such as ``time to neutrophil engraftment'' and ``time to platelet
+  recovery''. In this way, we are able to have a more comprehensive
+  understanding to assess the HCT performance for SGD patients
+\item
+  Technology Innovation
+
+  In this project, we plan to create a standardized and interactive
+  visualization platform to illustrate the analysis results via an R
+  shiny web application. Besides the ease of exploring and engaging with
+  research outcomes, we also recognize the advantage of an R shiny web
+  application to serve as a standardized tool for assisting future
+  researchers to expand upon this project by feeding more recent data to
+  this platform and obtaining more updated results.
 \end{itemize}
 
-\hypertarget{approach}{%
-\subsection{Approach}\label{approach}}
+\hypertarget{data-pre-processing}{%
+\subsection{Data Pre-Processing}\label{data-pre-processing}}
 
-Background - what are the existing concepts this study will use?
-
-\begin{itemize}
-\item
-  Hematopoietic Cell Transplantation (HCT) and Cellular Therapies:
-
-  \begin{itemize}
-  \item
-    Clinical and Demographic Data Analysis: Utilizing patient data from
-    HCT and other cellular therapies, including information on donor
-    types, conditioning regimens, and transplant outcomes.
-  \item
-    Survival and Outcome Metrics: Focusing on metrics like overall
-    survival, disease-free survival, incidence of GVHD, relapse rates,
-    and other complications post-transplant.
-  \end{itemize}
-\item
-  Statistical Methods for Survival Analysis:
-
-  \begin{itemize}
-  \item
-    Kaplan-Meier Estimates: To calculate survival probabilities over
-    time for various patient cohorts.
-  \item
-    Cox Proportional Hazards Model: To identify the factors that
-    significantly influence patient outcomes, adjusting for covariates.
-  \end{itemize}
-\item
-  Data Visualization and Interactive Tools:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    R Shiny: Development of interactive web applications for dynamic
-    data exploration. R Shiny applications enable users to interact with
-    the data in real-time, adjusting parameters to visualize different
-    outcomes or demographic analyses.
-  \end{itemize}
-\end{itemize}
-
-How will they be put together?
+After comparing the dataset from 2020 to 2021, our team has decided to
+focus on the dataset from 2021 due to its enhanced data completeness and
+inclusiveness of the dataset from 2020. To ensure the quality of
+analysis, columns for variables excluding outcomes with over 20\%
+missing data were removed. In addition, variables with unchanging values
+were disregarded. In the end, we have the following numbers of variables
+in addition to patient ID (see Appendix):
 
 \begin{itemize}
 \item
-  Data Preparation and Initial Analysis: Gathering and cleaning the data
-  from the CIBMTR research database, followed by descriptive analyses to
-  understand the patient population and treatment characteristics.
+  11 patient-related variables
 \item
-  Deep-Dive into Survival Analysis: Utilizing the identified variables
-  from the descriptive analysis, conducting survival analysis to explore
-  the relationships between patient characteristics, treatment
-  variables, and outcomes.
+  1 disease-related variable
 \item
-  Development and Deployment of the R Shiny Application: Integrating the
-  insights from both descriptive and survival analyses into an
-  interactive tool. This application will not only showcase the results
-  but also allow for the exploration of hypothetical scenarios, such as
-  the impact of different donor types or conditioning regimens on
-  patient outcomes.
+  10 transplant-related variables
+\item
+  8 outcome variables/endpoints
 \end{itemize}
 
 \hypertarget{specific-aim-1-descriptive-analysis-of-enrolled-patients}{%
 \subsection{Specific Aim 1: Descriptive Analysis of Enrolled
 Patients}\label{specific-aim-1-descriptive-analysis-of-enrolled-patients}}
 
-This aim involves a detailed examination of the demographic and clinical
-characteristics of patients who have undergone HCT and other cellular
-therapies. By analyzing factors such as age, gender, diagnosis, type of
-transplant, and donor characteristics, we aim to identify patterns and
-trends that could inform future patient care strategies.
+\textbf{Hypothesis:} The exploratory data analysis aims to characterize
+the distribution of baseline variables and to initially assess
+associations between the distribution of baseline characteristics and
+the occurrence of clinical endpoint events. Specifically, for each
+categorical variable, we will calculate the count and proportion of each
+value level, and for continuous variables, we will calculate the mean
+and standard deviation. We will then examine the association between
+occurrence of clinical endpoints (all-purpose death, signs of recovery)
+and baseline variables using Logistic regression, and examine the
+associations between explanatory variables by either Pearson's
+Chi-squared test (categorical VS categorical), linear regression
+(numerical VS numerical), and t-test or Wilcoxen test (numerical VS
+categorical).
+
+\textbf{Rationale:} Conducting exploratory analyses allows us to
+understand the structure and the pattern in the data, and thus
+facilitates the process of identification of potentially unbalanced
+variables and the decision whether to keep these variables in downstream
+analyses. By testing associations between outcome variables and response
+variables, we could gain initial insights into characteristics that
+might be clinically relevant in HCT patients.
+
+\textbf{Experimental Approach:} Summary tables will be created by
+processing the data with R package \texttt{dplyr} and presented with the
+package \texttt{gt}. When examining associations between explanatory
+variables, we will implement Pearson's Chi-squared test by the R
+function \texttt{chisq.test}, linear regression by R function
+\texttt{lm} , t test by \texttt{t.test} and Wilcoxen's test by
+\texttt{wilcox.test}. Highly associated explanatory variables will be
+further examined and the decision on exclusion of one of the highly
+associated variables will be made. To fit Logistic regression to test
+the association between explanatory variables and outcome variables, the
+R function \texttt{glm} will be used.
+
+\textbf{Interpretation of Results:} From the model fit, we could extract
+predictors that are associated with significant p-values with a
+pre-specified significance level (0.05), and consider them as important
+predictors for the occurrence of specific clinical outcome.
+
+\textbf{Potential Problems and Alternative Approaches: } The results of
+the Logistic regression could be biased by unbalanced distribution of
+predictors, and this could be mitigated by combining rare categories.
 
 \hypertarget{specific-aim-2-survival-analysis}{%
 \subsection{Specific Aim 2: Survival
 Analysis}\label{specific-aim-2-survival-analysis}}
 
-We will perform survival analysis to assess the time from HCT to various
-endpoints, including graft-versus-host disease (GVHD), relapse,
-infection, and overall survival. This analysis will help identify key
-predictors of outcomes and potentially modifiable factors that could
-improve patient survival and quality of life.
+\textbf{Hypothesis:} The time from hematopoietic cell transplantation
+(HCT) to various clinical endpoints (last contact or death, graft
+failure, neutrophil engraftment, platelet recovery, acute and chronic
+graft-vs-host disease (GVHD), post-transplant lymphoproliferative
+disorder (PTLD), and second malignancy) significantly differ among
+patient groups defined by specific demographic and clinical
+characteristics.
+
+\textbf{Rationale:} Understanding the time to key post-HCT outcomes is
+crucial for several reasons.
+
+\begin{itemize}
+\item
+  Firstly, it enables the prediction of patient prognosis by providing
+  estimates on when significant post-transplant events might occur, thus
+  informing both patients and clinicians about possible recovery paths
+  and any potential complications that could arise. This knowledge is
+  invaluable in setting realistic expectations and preparing for any
+  necessary interventions.
+\item
+  Secondly, insights gained from analyzing the timing of events such as
+  graft-versus-host disease (GVHD) are instrumental in guiding clinical
+  decisions. They allow healthcare providers to customize
+  post-transplant care according to the specific needs of each patient,
+  potentially mitigating risks and enhancing recovery.
+\item
+  Lastly, by identifying the factors that influence the speed of
+  recovery or the occurrence of delayed complications, adjustments can
+  be made to the transplant process itself. This could involve selecting
+  different donors, modifying conditioning regimens, or altering
+  supportive care practices, all aimed at improving the overall success
+  and safety of the transplant procedure.
+\end{itemize}
+
+\textbf{Experimental Approach:}
+
+\begin{itemize}
+\tightlist
+\item
+  Cox Proportional Hazards (CoxPH) Model: To adjust for potential
+  confounders and assess the impact of various predictors on the time to
+  each endpoint, CoxPH models will be fitted. A test of the proportional
+  hazards assumption can be based on testing whether there is a linear
+  relationship between the Schoenfeld residuals and some function of
+  time. Variables will include patient demographics, disease
+  characteristics, transplant-related factors, and pre-transplant
+  comorbidities. We can conduct variable selection by analyzing the
+  log-likelihood and corresponding p-values calculated using the
+  \texttt{anova} function in the survival package for the specific model
+  fit.\\
+\item
+  Kaplan-Meier (KM) Survival Curves: For each of the eight endpoints, KM
+  survival curves will be generated to visualize the unadjusted
+  probability of reaching each endpoint over time post-HCT.
+\item
+  *During this approach, the proportional hazard assumption will be
+  verified. If the assumption fails to hold, random survival forest will
+  be conducted instead.
+\end{itemize}
+
+\textbf{Interpretation of Results: } In our analysis using the Cox
+Proportional Hazards model, we anticipate identifying several key
+variables that significantly influence the various endpoints of interest
+post-HCT, such as time to graft failure, neutrophil engraftment,
+platelet recovery, and the onset of acute and chronic graft-vs-host
+disease, among others. These variables could range from patient-related
+factors (e.g., age, gender, underlying disease type, and stage), to
+treatment-related factors (e.g., type of donor, conditioning regimen
+intensity), to post-transplant care aspects (e.g., immunosuppression
+protocol, infection prophylaxis).\\
+Once these influential variables are identified, we plan to conduct a
+stratification analysis to categorize patients into groups based on
+their characteristics. For example, patients might be grouped by age
+range, disease stage at transplant, or by the type of donor (related
+vs.~unrelated) to see how these factors affect outcomes differently.\\
+Following the stratification, we will plot Kaplan-Meier (KM) Survival
+Curves for each group. These plots will visually represent the survival
+probabilities over time for each stratified patient group, allowing us
+to observe any significant differences in survival rates among the
+groups. For instance, we may see distinct survival curves for younger
+vs.~older patients or for those receiving transplants from matched
+unrelated donors vs.~sibling donors.\\
+The expectation is that these stratified KM Survival Curves will reveal
+significant disparities in survival times across different patient
+groups, highlighting the impact of the identified variables on patient
+outcomes.
+
+\textbf{Potential Problems and Alternative Approaches:} In tackling the
+survival analysis for our study, we may encounter several challenges
+that necessitate alternative approaches. One such challenge is the
+violation of the proportional hazards assumption, a cornerstone of many
+survival analysis methods. Should this occur, we would pivot to
+employing time-varying covariate models or consider other survival
+analysis techniques, such as accelerated failure time models, which do
+not rely on this assumption. Another potential issue could arise from
+having sparse data for certain outcomes, which might reduce the
+statistical power of our analyses. In these instances, we might need to
+aggregate similar categories or focus our analysis on the most
+clinically relevant outcomes to ensure meaningful results. Furthermore,
+the identification of complex interactions among predictors could
+complicate the model's interpretability and accuracy. To address this,
+machine learning methods like random forests or survival trees could be
+employed, offering a more nuanced capture of these intricate
+relationships. These approaches not only help us navigate potential
+pitfalls but also enhance the robustness and relevance of our findings,
+ensuring they contribute effectively to the field.
 
 \hypertarget{specific-aim-3-development-of-an-r-shiny-application-for-results-visualization}{%
 \subsection{Specific Aim 3: Development of an R Shiny Application for
 Results
 Visualization}\label{specific-aim-3-development-of-an-r-shiny-application-for-results-visualization}}
 
-To make the findings accessible and actionable, an R Shiny application
-will be developed. This interactive tool will allow users to explore the
-data dynamically, visualize survival curves, compare outcomes across
-different patient groups, and potentially identify new areas for
-research or intervention.
+This application will serve as an interactive platform for clinicians,
+researchers, and policy-makers, enabling them to dynamically explore and
+analyze the wealth of patient-related, disease-related, and
+transplant-related variables and their impact on post-HCT outcomes.
 
-Hypothesis: What is being tested? Rationale: Why is this something we
-should be testing? Experimental Approach: How is the test going to be
-implemented? Interpretation of Results: How does the test translate to
-science? Potential Problems and Alternative Approaches: What will we do
-if it doesn't work?
+\textbf{Rationale:} The rationale behind this application is twofold.
+Firstly, given the complexity and multi-dimensionality of the data,
+traditional static methods of data presentation are insufficient for
+capturing the nuanced relationships between variables such as age,
+ethnicity, disease genotype, transplant type, and conditioning regimen.
+An interactive tool will allow for a more comprehensive and tailored
+exploration of these variables, fostering a deeper understanding of
+their interplay and impact on patient outcomes. Secondly, this
+application aims to democratize data access, allowing users to generate
+custom analyses and visualizations that can inform clinical
+decision-making and policy development.
 
-Note: Material below is for reference.
+\textbf{Experimental Approach: }The app will be implemented using R
+Shiny, leveraging its capabilities for creating interactive, web-based
+data visualizations. Key features will include the ability to filter and
+stratify data based on specific variables like age group, disease
+genotype, or transplant type, and visualize these in the form of
+survival curves, bar charts, and heatmaps. For instance, users could
+compare survival outcomes between different age groups or analyze the
+impact of donor-recipient HLA matching on post-transplant complications.
+This approach will enable users to interact with the data, providing
+immediate visual feedback and insights.
 
-\hypertarget{overview-of-the-proposal}{%
-\subsubsection{Overview of the
-proposal}\label{overview-of-the-proposal}}
+\textbf{Interpretation of Results:} The results presented through the
+Shiny app will offer valuable insights into the factors that influence
+post-HCT outcomes in SCD patients. By enabling the exploration of
+complex datasets in an intuitive manner, the app will not only aid in
+the interpretation of current research findings but also spark new
+hypotheses and areas for further study. It will facilitate a more
+nuanced understanding of the SCD patient journey post-HCT, contributing
+significantly to the field of hematology and transplant medicine.
 
-\hypertarget{research-team}{%
-\subsubsection{Research team}\label{research-team}}
+\pagebreak
 
-\hypertarget{preliminary-studies}{%
-\subsubsection{Preliminary studies}\label{preliminary-studies}}
+\hypertarget{appendix}{%
+\subsubsection{Appendix}\label{appendix}}
 
-\begin{wrapfigure}{R}{0.3\textwidth}
+\begin{longtable}[t]{|>{}ll>{}l|}
+\caption{\label{tab:unnamed-chunk-6}List of Predictors}\\
+\toprule
+Category & Variable.name & Description\\
+\midrule
+Disease-related & subdis1f & Disease genotype\\
+Patient-related & Dummyid & Unique patient identifier\\
+Patient-related & flag\_lancet & Cases from 2019 Lancet Heamatology publication\\
+Patient-related & flag\_blood & Cases from 2016 Blood publication\\
+Patient-related & flag\_0601 & Cases from BMT CTN 0601\\
+\addlinespace
+Patient-related & age & Patient age at transplant, years\\
+Patient-related & agegpff & Patient age at transplant, years\\
+Patient-related & sex & Sex\\
+Patient-related & ethnicit & Ethnicity\\
+Patient-related & kps & Karnofsky/Lansky score at HCT\\
+\addlinespace
+Patient-related & hctcigpf & HCT-comorbidity index\\
+Tranplant-related & donorf & Donor type\\
+Tranplant-related & graftype & Graft type\\
+Tranplant-related & condgrpf & Conditioning intensity\\
+Tranplant-related & condgrp\_final & Conditioning regimen\\
+\addlinespace
+Tranplant-related & atgf & ATG/Alemtuzumab given as conditioning regimen/GVHD prophylaxis\\
+Tranplant-related & gvhd\_final & GVHD prophylaxis\\
+Tranplant-related & hla\_final & Donor-recipient HLA matching\\
+Tranplant-related & rcmvpr & Recipient CMV serostatus\\
+Tranplant-related & yeargpf & Year of transplant\\
+\addlinespace
+Tranplant-related & yeartx & Year of transplant\\
+\bottomrule
+\end{longtable}
 
-\hfill{}\includegraphics[width=.3\textwidth]{Project-Proposal_files/figure-latex/unnamed-chunk-2-1} 
+\begin{longtable}[t]{|>{}ll>{}l|}
+\caption{\label{tab:unnamed-chunk-6}List of Time-to-Event Variables}\\
+\toprule
+Category & Variable.name & Description\\
+\midrule
+Outcomes & intxsurv & Time from HCT to date of last contact or death, months\\
+Outcomes & intxgf & Time from HCT to graft failure, months\\
+Outcomes & intxanc & Time from HCT to neutrophil engraftment, months\\
+Outcomes & intxplatelet & Time from HCT to platelet recovery, months\\
+Outcomes & intxagvhd & Time from HCT to acute graft-vs-host disease, months\\
+\addlinespace
+Outcomes & intxcgvhd & Time from HCT to chronic graft-vs-host disease, months\\
+Outcomes & intxptld & Time from HCT to PTLD, months\\
+Outcomes & intxscdmal & Time from HCT to second malignancy, months\\
+\bottomrule
+\end{longtable}
 
-\caption{Important scatterplot}\label{fig:unnamed-chunk-2}
-\end{wrapfigure}
+\pagebreak
 
-\hypertarget{resources}{%
-\subsubsection{Resources}\label{resources}}
+\begin{longtable}[t]{|>{}ll>{}l|}
+\caption{\label{tab:unnamed-chunk-7}List of Outcome Varaibles (Exclude Time-to-Event)}\\
+\toprule
+Category & Variable.name & Description\\
+\midrule
+Outcomes & dead & Survival status at last contact\\
+Outcomes & efs & Event-free survival (Graft failure or death are the events)\\
+Outcomes & gf & Graft failure\\
+Outcomes & dwogf & Death without graft failure\\
+Outcomes & anc & Neutrophil engraftment\\
+\addlinespace
+Outcomes & dwoanc & Death without neutrophil engraftment\\
+Outcomes & platelet & Platelet recovery\\
+Outcomes & dwoplatelet & Death without platelet recovery\\
+Outcomes & agvhd & Acute graft versus host disease, grades II-IV\\
+Outcomes & dwoagvhd & Death without acute graft versus host disease, grades II-IV\\
+\addlinespace
+Outcomes & cgvhd & Chronic graft-vs-host disease\\
+Outcomes & dwocgvhd & Death without chronic graft-vs-host disease\\
+Outcomes & ptld & Post-transplant lymphoproliferative disorder (PTLD)\\
+Outcomes & scdmal\_final & Secondary malignancy\\
+\bottomrule
+\end{longtable}
 
-\hypertarget{design-and-methods-for-aim-1}{%
-\subsubsection{Design and methods for Aim
-1}\label{design-and-methods-for-aim-1}}
-
-\hypertarget{design-and-methods-for-aim-2}{%
-\subsubsection{Design and methods for Aim
-2}\label{design-and-methods-for-aim-2}}
-
-\hypertarget{design-and-methods-for-aim-3}{%
-\subsubsection{Design and methods for Aim
-3}\label{design-and-methods-for-aim-3}}
-
-\hypertarget{timeline}{%
-\subsubsection{Timeline}\label{timeline}}
-
-There are lots of good examples of \texttt{R}-based Gantt charts to be
-found by clever Googling. For displaying progress with sidebar
-annotations by aim, I particularly like
-\href{https://datascienceplus.com/visualize-your-cvs-timeline-with-r-gantt-style/}{\underline{this}}
-example from the
-\href{https://github.com/laresbernardo/lares}{\underline{lares}}
-package.
-
-\hypertarget{rigor-and-reproducibility}{%
-\subsubsection{Rigor and
-reproducibility}\label{rigor-and-reproducibility}}
-
-\hypertarget{impact-of-the-proposed-study}{%
-\subsubsection{Impact of the proposed
-study}\label{impact-of-the-proposed-study}}
+\clearpage
+\nocite{*}
 
 \bibliography{references.bib}
 
