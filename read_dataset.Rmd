@@ -103,7 +103,7 @@ scd_data_yr3 <- scd_data_yr3 %>%
 
 meta_yr3_indata_lst_final <- setNames(lapply(1:length(meta_yr3_lst), function(i){
   data_i <- meta_yr3_lst[[i]]
-  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "RACEGP")
+  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "racegp")
   data <- data_i[indata_idx, c("Variable name", "Description")] %>%
     drop_na() %>%
     distinct() %>%
@@ -126,6 +126,10 @@ other_outcome_full <-  var_full %>%
 pred_full %>% knitr::kable(caption = "List of Predictors")
 time_full %>% knitr::kable(caption = "List of Time-to-Event Variables")
 other_outcome_full %>% knitr::kable(caption = "List of Outcome Varaibles (Exclude Time-to-Event)")
+
+
+#Commented off after creating the RDS file
+#saveRDS(var_full, file = "processed_meta.rds")
 ```
 
 ```{r}
@@ -190,7 +194,8 @@ scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
   if(nrow(label_df) > 0 & !all(is.na(label_df$Value))){
     ret <- scd_data_yr3[, col_i, drop = T] 
     ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
-    names(ret) <- col_i
+    names(ret) <- ifelse(col_i == "RACEG", yes = "RACEGP", 
+                         no = col_i)
   } else{
     if(nrow(label_df) == 0){print(col_i)}
     ret <- scd_data_yr3[, col_i]
@@ -199,97 +204,13 @@ scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
 })
 
 scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
+#saveRDS(scd_data_yr3_label, "processed_scd_data.RDS")
 ```
 
 
 
-```{r}
-summarize_data <- function(df, id_cols){
-num_vars <- purrr::map_lgl(df %>% select(-all_of(id_cols), -RACEG),
-                            is.numeric)
-
-cont_vars <- names(num_vars)[num_vars]
-cat_vars <- colnames(df %>%
-                        select(-all_of(id_cols)))[which(!colnames(df %>%
-                        select(-all_of(id_cols))) %in% cont_vars)]
-
-cont_sum <- df %>%
-  select(all_of(cont_vars))%>%
-  mutate(across(c(cont_vars), 
-                     list(`mean (sd)` = ~ paste0(round(mean(.x, na.rm = T),2) , 
-                                         " (", 
-                               round(sd(.x, na.rm = T), 2),  ")")
-                            ),
-                   .names = "{.col}")) %>%
-  distinct() %>%
-  t(.) %>%
-  data.frame(.)
-
-#colnames(cont_sum) <- cont_sum[1, ]
-#cont_sum <- cont_sum[-1, ]
-  
-cat_sum <- df %>%
-  select(all_of(cat_vars)) %>%
-  mutate(across(c(cat_vars), as.factor))
-
-cat_sum_wide <- cat_sum %>%
-  mutate(id = row_number())%>%
-  select(id)
-  
- purrr::walk(seq_len(length(cat_vars)), function(i){
-    covar_i <- cat_vars[i]
-    temp_df_cat <- cat_sum[ , covar_i, drop = FALSE]
-    temp_df_wide <- temp_df_cat %>%
-      dplyr::mutate(value = 1, id = row_number()) %>%
-      pivot_wider(id_cols = c(id),
-                  values_from = value, 
-                  names_from = !!sym(covar_i), 
-                  names_prefix = paste0(covar_i, ":"),
-                  values_fill = 0)
-    
-      cat_sum_wide <<- cat_sum_wide %>%
-      left_join(temp_df_wide, by = c("id" = "id")) 
-    })
-
-#cat_sum_wide
-
-cat_sum <- cat_sum_wide %>%
-  select(-id) %>%
-  mutate(across(everything(), 
-                list(`n (%)` = ~paste0(sum(.x) , " (", 
-                                     round(mean(.x) * 100, 2),  
-                                     "%)")
-                   ), 
-              .names = "{.col}")) %>%
-  distinct() %>%
-  t(.) %>%
-  data.frame(.)
-
-colnames(cont_sum) <- "value"
-colnames(cat_sum) <- "value"
-
-ret1 <- cont_sum %>% 
-  mutate(var = rownames(.)) %>%
-  gt::gt(rowname_col = "var")
-
-ret2 <- cat_sum %>%
-  mutate(cat = rownames(.), 
-         group_cat = str_split(cat, ":", simplify = T)[, 1], 
-         cat_label = str_split(cat, ":", simplify = T)[, 2]) %>%
-  select(-cat) %>%
-  gt::gt(rowname_col = "cat_label", 
-     groupname_col = "group_cat")
 
 
-return(list(ret1, ret2))
-}
-```
-
-
-
-```{r}
-summarize_data(scd_data_yr3_label, "DUMMYID")
-```
 
 
 
