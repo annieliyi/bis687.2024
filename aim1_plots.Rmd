@@ -1,0 +1,61 @@
+---
+title: "aim1_plots"
+author: "Wanjing Chen"
+date: "2024-04-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+```
+
+
+```{r}
+var_full <- readRDS("processed_meta.rds")
+scd_data_yr3_label <- readRDS("processed_scd_data.rds")
+```
+
+
+
+```{r}
+num_vars <- purrr::map_lgl(scd_data_yr3_label %>% select(-all_of("DUMMYID"),
+                                           -all_of("YEARTX")),
+                             is.numeric)
+cont_vars <- names(num_vars)[num_vars]
+
+cat_vars <- colnames(
+  scd_data_yr3_label %>%
+    select(-all_of("DUMMYID")))[which(
+      !colnames(scd_data_yr3_label %>%
+                  select(-all_of("DUMMYID"))) %in% cont_vars)]
+  
+  
+naming_vec <- setNames(var_full$Description, 
+                       var_full$Variable.name)
+
+
+
+
+lapply(cont_vars, function(var_i){
+  ggplot(scd_data_yr3_label) + 
+    geom_density(aes(x = !!sym(var_i))) + 
+    xlab(naming_vec[tolower(var_i)])
+})
+
+
+
+lapply(cat_vars, function(var_i){
+  ggplot(scd_data_yr3_label) + 
+    geom_histogram(aes(x = !!sym(var_i)), stat="count")+
+    xlab(naming_vec[tolower(var_i)]) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+})
+```
+
+
