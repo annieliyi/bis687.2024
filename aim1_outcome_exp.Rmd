@@ -81,14 +81,17 @@ num_df <- cbind(outcome_df,
 
 lapply(colnames(outcome_df), function(out_i){
   dt <- num_df[ , c(out_i, "AGE")]
+
   ret1 <- dt |>
     group_by(!!sym(out_i))|>
     summarize(Total_num = n(),
               Avg_age = mean(AGE), 
               Med_age = median(AGE))
+
   
   ret2 <- ggplot(dt) + 
-    geom_density(aes(x = AGE, fill = !!sym(out_i))) 
+    geom_density(aes(x = AGE, fill = !!sym(out_i)), 
+                 alpha = 0.3) 
   
   list(ret1, ret2)
 })
