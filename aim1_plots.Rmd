@@ -44,16 +44,11 @@ data_visualization <- lapply(seq_len(length(df_lst)), function(i){
   ret <- visualize_data(df_i, id, 
                  exclude, naming_vec, 
                  names(df_lst)[i])
+  })
   
-})
 
 
-
-
-
-
+data_visualization
 
 ```
-
-
 
