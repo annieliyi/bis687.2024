@@ -204,7 +204,9 @@ scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
 })
 
 scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
+scd_data_yr3_dropna <- na.omit(scd_data_yr3_label)
 #saveRDS(scd_data_yr3_label, "processed_scd_data.RDS")
+#saveRDS(scd_data_yr3_dropna, "cleaned_scd_data.RDS")
 ```
 
 
