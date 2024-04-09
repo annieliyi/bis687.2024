@@ -40,7 +40,8 @@ summarize_data <- function(df, id_cols, factor_cols,
       gt::gt(rowname_col = "var_lbl", 
              caption = paste0(tbl_name, " : Continuous Variable Summary"))
     
-    gt::gtsave(ret1,  paste0(tbl_name, "_Cont_Sum.png"))
+    gt::gtsave(ret1,  file.path("tables", 
+                                paste0(tbl_name, "_Cont_Sum.png")))
   }
   
   if(length(cat_vars)== 0){
@@ -95,7 +96,9 @@ summarize_data <- function(df, id_cols, factor_cols,
              groupname_col = "group_lbl", 
              caption = paste0(tbl_name, " : Categorical Variable Summary"))
     
-    gt::gtsave(ret2,  paste0(tbl_name, "_Cat_Sum.png"))
+    gt::gtsave(ret2, file.path("tables", 
+                               paste0(tbl_name,
+                                      "_Cat_Sum.png")))
     
   }
   return(list(ret1, ret2))

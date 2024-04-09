@@ -204,7 +204,9 @@ scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
 })
 
 scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
+scd_data_yr3_dropna <- na.omit(scd_data_yr3_label)
 #saveRDS(scd_data_yr3_label, "processed_scd_data.RDS")
+#saveRDS(scd_data_yr3_dropna, "cleaned_scd_data.RDS")
 ```
 
 
@@ -239,7 +241,18 @@ df_lst <- setNames(lapply(var_Cats$Category, function(cat_i){
   return(ret)
 }), var_Cats$Category)
 
+
+
+df_lst2 <- setNames(lapply(var_Cats$Category, function(cat_i){
+  cols <- var_Cats[var_Cats$Category == cat_i, ]$all_vars %>%
+    strsplit(., ",") %>%
+    unlist()
+  ret <- scd_data_yr3_dropna[, toupper(cols), drop = F]
+  return(ret)
+}), var_Cats$Category)
+
 #saveRDS(df_lst, "categorized_dfsubset.RDS")
+#saveRDS(df_lst2, "cleaned_categorized_dfsubset.RDS")
 ```
 
 

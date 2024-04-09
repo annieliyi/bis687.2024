@@ -18,9 +18,9 @@ library(ggplot2)
 
 ```{r}
 var_full <- readRDS("processed_meta.rds")
-scd_data_yr3_label <- readRDS("processed_scd_data.rds")
+scd_data_yr3_label <- readRDS("cleaned_scd_data.rds")
 naming_vec <- readRDS("var_labels.RDS")
-df_lst <- readRDS("categorized_dfsubset.RDS")
+df_lst <- readRDS("cleaned_categorized_dfsubset.RDS")
 source("R/visualize_data.R")
 ```
 
