@@ -38,10 +38,14 @@ cat_patient_df <- pred_patient_df %>%
          -DUMMYID)
 
 cat_transp_df <- pred_transp_df %>%
-  select(where(~ !is.numeric(.)))
+  select(where(~ !is.numeric(.)),
+         YEARTX)
+
+```
 
 
 
+```{r}
 cat_test(outcome_df, cat_disease_df)
 cat_test(outcome_df, cat_patient_df)
 cat_test(outcome_df, cat_transp_df)
@@ -52,5 +56,36 @@ cat_test(outcome_df, cat_transp_df)
 cat_plot(outcome_df, cat_disease_df, naming_vec)
 cat_plot(outcome_df, cat_patient_df, naming_vec)
 cat_plot(outcome_df, cat_transp_df, naming_vec)
+
+```
+
+
+
+
+```{r}
+num_disease_df <- pred_disease_df %>%
+  select(where(~ is.numeric(.)))
+  
+num_patient_df <- pred_patient_df %>%
+  select(where(~ is.numeric(.)), 
+         -DUMMYID)
+
+num_transp_df <- pred_transp_df %>%
+  select(where(~ is.numeric(.)), 
+         -YEARTX) #YEARTX should be seen as categorical
+
+
+num_df <- cbind(outcome_df, 
+                num_patient_df)
+
+
+lapply(colnames(outcome_df), function(out_i){
+  dt <- num_df[ , c(out_i, "AGE")]
+  dt |>
+    group_by(!!sym(out_i))|>
+    summarize(Total_num = n(),
+              Avg_age = mean(AGE), 
+              Med_age = median(AGE))
+})
 
 ```
