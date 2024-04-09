@@ -1,0 +1,47 @@
+---
+title: "aim1_outcome_exp"
+author: "Wanjing Chen"
+date: "2024-04-08"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+header-includes: "\\usepackage{booktabs} - \\usepackage{longtable}"
+---
+
+
+```{r}
+var_full <- readRDS("processed_meta.rds")
+scd_data_yr3_label <- readRDS("processed_scd_data.rds")
+naming_vec <- readRDS("var_labels.RDS")
+df_lst <- readRDS("categorized_dfsubset.RDS")
+source("R/var_cat_test.R")
+```
+
+```{r}
+outcome_df <- df_lst$Outcomes |>
+  select_at(vars(-starts_with("INT")))
+
+pred_disease_df <- df_lst$`Disease-related`
+pred_patient_df <- df_lst$`Patient-related`
+pred_transp_df <- df_lst$`Tranplant-related`
+```
+
+
+```{r}
+cat_disease_df <- pred_disease_df %>%
+  select(where(~ !is.numeric(.)))
+  
+cat_patient_df <- pred_patient_df %>%
+  select(where(~ !is.numeric(.)), 
+         -DUMMYID)
+
+cat_transp_df <- pred_transp_df %>%
+  select(where(~ !is.numeric(.)))
+
+
+
+cat_test(outcome_df, cat_disease_df)
+cat_test(outcome_df, cat_patient_df)
+cat_test(outcome_df, cat_transp_df)
+```
