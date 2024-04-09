@@ -16,6 +16,7 @@ scd_data_yr3_label <- readRDS("processed_scd_data.rds")
 naming_vec <- readRDS("var_labels.RDS")
 df_lst <- readRDS("categorized_dfsubset.RDS")
 source("R/var_cat_test.R")
+source("R/var_cat_plot.R")
 ```
 
 ```{r}
@@ -44,4 +45,10 @@ cat_transp_df <- pred_transp_df %>%
 cat_test(outcome_df, cat_disease_df)
 cat_test(outcome_df, cat_patient_df)
 cat_test(outcome_df, cat_transp_df)
+```
+
+
+```{r}
+cat_plot(outcome_df, cat_disease_df, naming_vec)
+cat_plot(outcome_df, cat_patient_df, naming_vec)
 ```
