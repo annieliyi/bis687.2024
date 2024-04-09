@@ -51,4 +51,6 @@ cat_test(outcome_df, cat_transp_df)
 ```{r}
 cat_plot(outcome_df, cat_disease_df, naming_vec)
 cat_plot(outcome_df, cat_patient_df, naming_vec)
+cat_plot(outcome_df, cat_transp_df, naming_vec)
+
 ```
