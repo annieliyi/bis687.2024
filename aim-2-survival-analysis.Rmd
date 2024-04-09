@@ -26,313 +26,27 @@ library(kableExtra)
 library(survival)
 library(glmnet)
 library(boot)
+library(survminer)
 ```
 
-# read dataset  
+# read dataset
 ```{r}
-scd_data_yr2 <- read_sas("data/curesc_year2_v2.sas7bdat")
-scd_data_yr3 <- read_sas("data/curesc_year3_v3.sas7bdat")
-```
+# var_full <- readRDS("processed_meta.rds")
+scd_data_yr3_label <- readRDS("processed_scd_data.rds")
+# naming_vec <- readRDS("var_labels.RDS")
+df_lst <- readRDS("categorized_dfsubset.RDS")
 
-# check yr3 yr3 data
-
-```{r}
-bind_rows(scd_data_yr2[which(scd_data_yr2$DUMMYID == 75505098),],scd_data_yr3[which(scd_data_yr2$DUMMYID == 75505098),])
-
-yr2col_idx <- which(!colnames(scd_data_yr2) %in%  colnames(scd_data_yr3))
-colnames(scd_data_yr2)[yr2col_idx]
-scd_data_yr2[, yr2col_idx] #both contain more than 50% NA
-```
-
-
-
-# process metadata information
-
-```{r}
-meta_yr3 <- readxl::read_excel("data/Codebook 2021 Year 3.xlsx", 
-                                         col_names = T)
-meta_yr3 <- meta_yr3 %>% 
-  fill(`Variable name`, .direction = "down")
-
-#cutoffs_3 <- stringr::str_which(meta_yr3$`Variable name`, ":")
-cutoffs_3 <- which(rowSums(!is.na(meta_yr3)) == 1) #these are section titles
-
-cutoff_names3 <- str_replace(meta_yr3$`Variable name`[cutoffs_3], ":", "")
-
-group_yr3 <- c(rep(cutoff_names3[1], cutoffs_3[2] - 1), 
-               rep(cutoff_names3[2], cutoffs_3[3] - cutoffs_3[2]), 
-               rep(cutoff_names3[3], cutoffs_3[4] - cutoffs_3[3]), 
-               rep(cutoff_names3[4], cutoffs_3[5] - cutoffs_3[4]), 
-               rep(cutoff_names3[5], nrow(meta_yr3) -  cutoffs_3[5] + 1))
-
-meta_yr3_lst <- split(meta_yr3, group_yr3)
-
-
-meta_yr3_lst <- lapply(meta_yr3_lst, function(data_i){
-  data_name <- str_replace(data_i$`Variable name`[1], ":", "")
-  data <- data_i[-1, ]
-  return(data)
-})
-
-meta_yr3_indata_lst <- lapply(meta_yr3_lst, function(data_i){
-  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "RACEGP")
-  data <- data_i[indata_idx, ]
-  return(unique(data$`Variable name`))
-})
-```
-
-
-```{r}
-#remove variables that had a high missing rate, defined as greater than 80% (won't apply to outcome data, where missing is considered as censoring)
-# scd_data_yr2 <- scd_data_yr2 %>% 
-#   mutate(across(everything(), ~na_if(.x, 99))) %>%
-#   mutate(across(everything(), ~na_if(.x, 98))) %>%
-#   mutate(across(everything(), ~na_if(.x, -9))) %>%
-#   select_if(~sum(is.na(.)) / nrow(scd_data_yr2) <= 0.2) %>%
-#   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
-
-outcomevars <- meta_yr3_indata_lst$Outcomes
-outcomevar_idx <- which(tolower(colnames(scd_data_yr3)) %in% tolower(outcomevars))
-
-
-crfvars <- meta_yr3_indata_lst$`CRF data collection track only`
-crf_idx <-  which(tolower(colnames(scd_data_yr3)) %in% tolower(crfvars))
-
-scd_data_yr3 <- scd_data_yr3 %>% 
-  select(-all_of(crf_idx)) %>%
-  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, 99))) %>%
-  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, 98))) %>%
-  mutate(across(!all_of(outcomevar_idx), ~na_if(.x, -9))) %>%
-  select_if(~sum(is.na(.)) / nrow(scd_data_yr3) <= 0.2) %>%
-  select(where(~n_distinct(.x, na.rm = TRUE) > 1))
-
-
-
-meta_yr3_indata_lst_final <- setNames(lapply(1:length(meta_yr3_lst), function(i){
-  data_i <- meta_yr3_lst[[i]]
-  indata_idx <- which(tolower(data_i$`Variable name`) %in% tolower(colnames(scd_data_yr3))|data_i$`Variable name` == "RACEGP")
-  data <- data_i[indata_idx, c("Variable name", "Description")] %>%
-    drop_na() %>%
-    distinct() %>%
-    mutate(Category = names(meta_yr3_lst)[i]) %>%
-    select(Category, everything())
-  return(data)
-}), names(meta_yr3_lst))
-
-var_full <- data.frame(do.call(rbind, meta_yr3_indata_lst_final))
-
-pred_full <- var_full %>% filter(Category != "Outcomes")
-time_full <- var_full %>% 
-  filter(Category == "Outcomes" & 
-           str_detect(Description, "^Time"))
-other_outcome_full <-  var_full %>% 
-  filter(Category == "Outcomes" & 
-           !str_detect(Description, "^Time"))
-
-
-pred_full %>% knitr::kable(caption = "List of Predictors")
-time_full %>% knitr::kable(caption = "List of Time-to-Event Variables")
-other_outcome_full %>% knitr::kable(caption = "List of Outcome Varaibles (Exclude Time-to-Event)")
-```
-
-```{r}
-## COMMENTED OFF after deciding not use yr2 data
-
-# meta_yr2 <- readxl::read_excel("data/Codebook 2020 Year 2.xlsx", 
-#                                          col_names = T)
-# 
-# meta_yr2 <- meta_yr2 %>% 
-#   fill(`Variable name`, .direction = "down")
-# 
-# cutoffs_2 <- stringr::str_which(meta_yr2$`Variable name`, ":")
-# cutoff_names2 <- str_replace(meta_yr2$`Variable name`[cutoffs_2], ":", "")
-# 
-# group_yr2 <- c(rep(cutoff_names2[1], cutoffs_2[2] - 1), 
-#                rep(cutoff_names2[2], cutoffs_2[3] - cutoffs_2[2]), 
-#                rep(cutoff_names2[3], nrow(meta_yr2) -  cutoffs_2[3] + 1))
-# 
-# meta_yr2_lst <- split(meta_yr2, group_yr2)
-# 
-# 
-# meta_yr2_lst <- lapply(meta_yr2_lst, function(data_i){
-#   data_name <- str_replace(data_i$`Variable name`[1], ":", "")
-#   data <- data_i[-1, ]
-#   return(data)
-# })
-
-# scd_data_yr2_label <- lapply(colnames(scd_data_yr2), function(col_i){
-#   if(col_i == "RACEG"){
-#     label_df <- meta_yr2[which(tolower(meta_yr2$`Variable name`) ==
-#                                  tolower("RACEGP")), ]
-#   } else{
-#     label_df <- meta_yr2[which(tolower(meta_yr2$`Variable name`) == tolower(col_i)), ]
-#   }
-#   
-#   
-#   if(nrow(label_df) > 0 & !all(is.na(label_df$Value))){
-#     ret <- scd_data_yr2[, col_i, drop = T] 
-#     ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
-#     names(ret) <- col_i
-#   } else{
-#     if(nrow(label_df) == 0){print(col_i)}
-#     ret <- scd_data_yr2[, col_i]
-#   }
-#   ret
-# })
-# 
-# scd_data_yr2_label <- do.call(cbind, scd_data_yr2_label)
-```
-
-
-
-```{r}
-scd_data_yr3_label <- lapply(colnames(scd_data_yr3), function(col_i){
-  if(col_i == "RACEG"){
-    label_df <- meta_yr3[which(tolower(meta_yr3$`Variable name`) ==
-                                 tolower("RACEGP")), ]
-  } else{
-    label_df <- meta_yr3[which(tolower(meta_yr3$`Variable name`) == tolower(col_i)), ]
-  }
-  
-  if(nrow(label_df) > 0 & !all(is.na(label_df$Value))){
-    ret <- scd_data_yr3[, col_i, drop = T] 
-    ret <- tibble(label_df$Label[match(as.character(ret), label_df$Value)])
-    names(ret) <- col_i
-  } else{
-    if(nrow(label_df) == 0){print(col_i)}
-    ret <- scd_data_yr3[, col_i]
-  }
-  ret
-})
-
-scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
-```
-
-
-
-```{r}
-summarize_data <- function(df, id_cols){
-num_vars <- purrr::map_lgl(df %>% select(-all_of(id_cols), -RACEG),
-                            is.numeric)
-
-cont_vars <- names(num_vars)[num_vars]
-cat_vars <- colnames(df %>%
-                        select(-all_of(id_cols)))[which(!colnames(df %>%
-                        select(-all_of(id_cols))) %in% cont_vars)]
-
-cont_sum <- df %>%
-  select(all_of(cont_vars))%>%
-  mutate(across(c(cont_vars), 
-                     list(`mean (sd)` = ~ paste0(round(mean(.x, na.rm = T),2) , 
-                                         " (", 
-                               round(sd(.x, na.rm = T), 2),  ")")
-                            ),
-                   .names = "{.col}")) %>%
-  distinct() %>%
-  t(.) %>%
-  data.frame(.)
-
-#colnames(cont_sum) <- cont_sum[1, ]
-#cont_sum <- cont_sum[-1, ]
-  
-cat_sum <- df %>%
-  select(all_of(cat_vars)) %>%
-  mutate(across(c(cat_vars), as.factor))
-
-cat_sum_wide <- cat_sum %>%
-  mutate(id = row_number())%>%
-  select(id)
-  
- purrr::walk(seq_len(length(cat_vars)), function(i){
-    covar_i <- cat_vars[i]
-    temp_df_cat <- cat_sum[ , covar_i, drop = FALSE]
-    temp_df_wide <- temp_df_cat %>%
-      dplyr::mutate(value = 1, id = row_number()) %>%
-      pivot_wider(id_cols = c(id),
-                  values_from = value, 
-                  names_from = !!sym(covar_i), 
-                  names_prefix = paste0(covar_i, ":"),
-                  values_fill = 0)
-    
-      cat_sum_wide <<- cat_sum_wide %>%
-      left_join(temp_df_wide, by = c("id" = "id")) 
-    })
-
-#cat_sum_wide
-
-cat_sum <- cat_sum_wide %>%
-  select(-id) %>%
-  mutate(across(everything(), 
-                list(`n (%)` = ~paste0(sum(.x) , " (", 
-                                     round(mean(.x) * 100, 2),  
-                                     "%)")
-                   ), 
-              .names = "{.col}")) %>%
-  distinct() %>%
-  t(.) %>%
-  data.frame(.)
-
-colnames(cont_sum) <- "value"
-colnames(cat_sum) <- "value"
-
-ret1 <- cont_sum %>% 
-  mutate(var = rownames(.)) %>%
-  gt::gt(rowname_col = "var")
-
-ret2 <- cat_sum %>%
-  mutate(cat = rownames(.), 
-         group_cat = str_split(cat, ":", simplify = T)[, 1], 
-         cat_label = str_split(cat, ":", simplify = T)[, 2]) %>%
-  select(-cat) %>%
-  gt::gt(rowname_col = "cat_label", 
-     groupname_col = "group_cat")
-
-
-return(list(ret1, ret2))
-}
-```
-
-
-
-```{r}
-summarize_data(scd_data_yr3_label, "DUMMYID")
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-#remove useless variables
-#scd_data_clean<- select(scd_data_clean, -c(AGEGPFF, YEARGPF))
-```
-
-```{r}
 #time to events variables:
 #INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV,death
 columns_to_check <-toupper(c("intxsurv", "intxgf", "intxanc", "intxplatelet", "intxagvhd", "intxcgvhd", "intxptld", "intxscdmal", "intxintub", "intxvod", "intxtma", "intxadial", "intxckd", "intxarrhyth", "intxchf", "intxinfap", "intxhtn", "intxdvt", "intxcns", "intxenc", "intxneuro", "intxseiz", "intxstroke", "intxdiab", "intxghd", "intxhypo", "intxpanc", "intxgod", "intxcyst", "intxavn", "intxosteo", "intxdepr", "intxanx", "intxptsd", "intxcata", "intxhylip", "intxiron", "intxmucos", "intxothorgsp"))
-dataset_column_names <- colnames(scd_data_yr3)
+#dataset_column_names <- colnames(scd_data_yr3)
 
-columns_exist <- columns_to_check %in% dataset_column_names
+#columns_exist <- columns_to_check %in% dataset_column_names
 
-existing_columns <- columns_to_check[columns_exist]
-print(existing_columns)
-columns_exist_meta <- tolower(existing_columns)
-time_to_event <- meta_yr3[which(meta_yr3$`Variable name` %in% columns_exist_meta),]
+#existing_columns <- columns_to_check[columns_exist]
+#print(existing_columns)
+#columns_exist_meta <- tolower(existing_columns)
+#time_to_event <- meta_yr3[which(meta_yr3$`Variable name` %in% columns_exist_meta),]
 ```
 
 # SURVIVAL ANALYSIS
@@ -340,7 +54,7 @@ time_to_event <- meta_yr3[which(meta_yr3$`Variable name` %in% columns_exist_meta
 # preparing data set
 ```{r}
 # event && event occurance
-# convert dead, GF, EFS, ANC, PLATELET, AGVHD, CGVHD, SCDMAL_FINAL to 0/1
+# convert DEAD, GF, EFS, ANC, PLATELET, AGVHD, CGVHD, SCDMAL_FINAL to 0/1
 scd_data_yr3_label$DEAD <- ifelse(scd_data_yr3_label$DEAD=='Alive', 0,1)
 scd_data_yr3_label$GF <- ifelse(scd_data_yr3_label$GF=='No', 0,1)
 scd_data_yr3_label$EFS <- ifelse(scd_data_yr3_label$EFS=='No event', 0,1)
@@ -351,6 +65,8 @@ scd_data_yr3_label$CGVHD <- ifelse(scd_data_yr3_label$CGVHD=='No', 0,1)
 scd_data_yr3_label$SCDMAL_FINAL <- ifelse((scd_data_yr3_label$SCDMAL_FINAL=='None' & scd_data_yr3_label$SCDMAL_FINAL=='Not Reported'), 0,1)
 
 #total features: RCMVPR, SEX, ETHNICIT, DONORF, GRAFTYPE, YEARTX, AGE, AGEGPFF, KPS, HCTCIGPF, SUBDIS1F, ATGF, YEARGPF, GVHD_FINAL, CONDGRPF, CONDGRP_FINAL, HLA_FINAL, FLAG_LANCET, FLAG_BLOOD
+## add race
+## 
 ```
 
 
@@ -367,9 +83,9 @@ cox_func <- function(event,scd_data_yr3_label){
   
   # Fit lasso model
   fit_lasso <- glmnet(x, y, family = "cox")
-  plot(fit_lasso, label = TRUE)
+  plot(fit_lasso)
   cv_fit <- cv.glmnet(x, y, family = "cox")
-  plot(cv_fit, label = TRUE)
+  plot(cv_fit)
   best_lambda <- cv_fit$lambda.min
   fit_best_lambda <- glmnet(x, y, family = "cox", alpha = 1, lambda = best_lambda)
 
@@ -381,19 +97,83 @@ cox_func <- function(event,scd_data_yr3_label){
 }
 cox_func("DEAD",scd_data_yr3_label)
 ```
+
 ```{r}
 coefficients_df <- cox_func("DEAD", scd_data_yr3_label)
 
 # Filter out coefficients that are not equal to zero
-selected_features <- coefficients_df[coefficients_df$value != 0, ]
+selected_features <- coefficients_df[coefficients_df$value != 0, ]$feature
+
 
 scd_data_yr3_label <- na.omit(scd_data_yr3_label)
+event <- "DEAD"
   time_to_event <- paste0('INTX', event)
   time_to_event <- ifelse(time_to_event =='INTXDEAD', 'INTXSURV',time_to_event)
   print(time_to_event)
   x <- model.matrix(~., data = scd_data_yr3_label[, 2:20])  # excluding time and event columns
+  selected_features <- unlist(selected_features)
   
-  y <- Surv(scd_data_yr3_label[[time_to_event]], scd_data_yr3_label[[event]])
+# 步骤1: 分割特征以提取列名和值
+extract_column_name_and_value <- function(feature) {
+  # 使用正则表达式来分割特征
+  # 这个正则表达式假设列名和值之间没有明显的分界，需要根据实际情况调整
+  # RCMVPR, SEX, ETHNICIT, DONORF, GRAFTYPE, YEARTX, AGE, AGEGPFF, KPS, HCTCIGPF, SUBDIS1F, ATGF, YEARGPF, GVHD_FINAL, CONDGRPF, CONDGRP_FINAL, HLA_FINAL, FLAG_LANCET, FLAG_BLOOD
+  if (any(grepl("RCMVPR|SEX|ETHNICIT|DONORF|GRAFTYPE|AGEGPFF|KPS|HCTCIGPF|ATGF|SUBDIS1F|YEARGPF|GVHD_FINAL|CONDGRPF|CONDGRP_FINAL|HLA_FINAL||FLAG_LANCET|FLAG_BLOOD", feature, ignore.case = TRUE))) {
+    parts <- strsplit(feature, "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z])", perl=TRUE)[[1]]
+    column_name <- parts[1]
+    value <- paste(parts[-1], collapse = "")
+    return(list(column_name = column_name, value = value))
+  } else {
+    # 对于不符合上述模式的特征，可能需要另外的逻辑来处理
+    return(list(column_name = NA, value = NA))
+  }
+}
+
+# 步骤2: 遍历 selected_features，提取列名和值，并确认这些列名和值
+km_features <- c()
+for(feature in selected_features) {
+  result <- extract_column_name_and_value(feature)
+  column_name <- result$column_name
+  value <- result$value
+  if(!is.na(column_name)) {
+    # 检查列名是否存在于 scd_data_yr3_label 中
+    if(column_name %in% names(scd_data_yr3_label)) {
+      # 检查值是否在该列的值集中
+      if(value %in% unique(tolower(scd_data_yr3_label[[column_name]]))) {
+        print(paste("Match found for", column_name, "with value", value))
+      } else {
+        print(paste("Column", column_name, "found, but value", value, "not found"))
+        km_features = c(km_features,column_name )
+      }
+    } else {
+      print(paste("Column", column_name, "not found"))
+    }
+  }
+}
+is.numeric(scd_data_yr3_label$INTXSURV)
+for(i in km_features){
+  if(i %in% c('YEARTX', 'AGE')){
+    
+  }
+  else{
+    p <-ggsurvplot(
+    survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
+            data = scd_data_yr3_label), 
+    pval = FALSE, 
+    risk.table = FALSE, 
+    risk.table.height = 0.25,
+    font.tickslab = c(size = 10),
+    ggtheme = theme_survminer() ,
+    legend.title = "")
+    print(p)
+    #t <- ggsurvtable(survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
+    #        data = scd_data_yr3_label))
+    #print(t)
+  }
+  
+}
+  
+
 ```
 
 
