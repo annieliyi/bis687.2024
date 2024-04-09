@@ -85,7 +85,7 @@ meta_yr3_indata_lst <- lapply(meta_yr3_lst, function(data_i){
 #   select(where(~n_distinct(.x, na.rm = TRUE) > 1))
 
 outcomevars <- meta_yr3_indata_lst$Outcomes
-outcomevar_idx <- which(tolower(colnames(scd_data_yr3)) %in% tolower(outcomevars))
+outcomevar_idx <- colnames(scd_data_yr3)[(tolower(colnames(scd_data_yr3)) %in% tolower(outcomevars))]
 
 
 crfvars <- meta_yr3_indata_lst$`CRF data collection track only`
@@ -209,9 +209,38 @@ scd_data_yr3_label <- do.call(cbind, scd_data_yr3_label)
 
 
 
+```{r}
+naming_vec <- setNames(var_full$Description, 
+                       var_full$Variable.name)
 
 
+naming_vec["age"] <- "Age (Years)"
+naming_vec["agegpff"] <- "Age Categories (Years)"
+naming_vec["yeargpf"] <- "Year of Transplant Categories (Year)"
+naming_vec["yeartx"] <- "Year of Translplant (Year)"
 
+#saveRDS(naming_vec, "var_labels.RDS")
+```
+
+
+```{r}
+var_Cats <- var_full |> 
+  group_by(Category) |>
+  mutate(all_vars = paste0(Variable.name, collapse = ","))|>
+  select(Category, all_vars)|>
+  ungroup()|>
+  distinct()
+
+df_lst <- setNames(lapply(var_Cats$Category, function(cat_i){
+  cols <- var_Cats[var_Cats$Category == cat_i, ]$all_vars %>%
+    strsplit(., ",") %>%
+    unlist()
+  ret <- scd_data_yr3_label[, toupper(cols), drop = F]
+  return(ret)
+}), var_Cats$Category)
+
+#saveRDS(df_lst, "categorized_dfsubset.RDS")
+```
 
 
 

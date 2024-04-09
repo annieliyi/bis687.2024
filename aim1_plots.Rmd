@@ -19,34 +19,14 @@ library(ggplot2)
 ```{r}
 var_full <- readRDS("processed_meta.rds")
 scd_data_yr3_label <- readRDS("processed_scd_data.rds")
+naming_vec <- readRDS("var_labels.RDS")
+df_lst <- readRDS("categorized_dfsubset.RDS")
 source("R/visualize_data.R")
 ```
 
 
 
 ```{r}
-var_Cats <- var_full |> 
-  group_by(Category) |>
-  mutate(all_vars = paste0(Variable.name, collapse = ","))|>
-  select(Category, all_vars)|>
-  ungroup()|>
-  distinct()
-
-df_lst <- setNames(lapply(var_Cats$Category, function(cat_i){
-  cols <- var_Cats[var_Cats$Category == cat_i, ]$all_vars %>%
-    strsplit(., ",") %>%
-    unlist()
-  ret <- scd_data_yr3_label[, toupper(cols), drop = F]
-  return(ret)
-}), var_Cats$Category)
-
-
-naming_vec <- setNames(var_full$Description, 
-                         var_full$Variable.name)
-  
-
-
-
 data_visualization <- lapply(seq_len(length(df_lst)), function(i){
   df_i <- df_lst[[i]]
   
