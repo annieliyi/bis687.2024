@@ -98,7 +98,7 @@ cox_func <- function(event,scd_data_yr3_label){
 cox_func("DEAD",scd_data_yr3_label)
 ```
 
-```{r}
+```{r, fig.height=18, fig.width=18}
 coefficients_df <- cox_func("DEAD", scd_data_yr3_label)
 
 # Filter out coefficients that are not equal to zero
@@ -159,21 +159,23 @@ for(i in km_features){
     p <-ggsurvplot(
     survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
             data = scd_data_yr3_label), 
-    pval = FALSE, 
-    risk.table = FALSE, 
+    pval = FALSE,
+    #onf.int = 0.95,
+    risk.table = TRUE, 
     risk.table.height = 0.25,
     font.tickslab = c(size = 10),
+    tables.theme = theme_cleantable(base_size = 7),
     ggtheme = theme_survminer() ,
     legend.title = "")
     print(p)
-    #t <- ggsurvtable(survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
-    #        data = scd_data_yr3_label))
-    #print(t)
+    t <- ggsurvtable(survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
+            data = scd_data_yr3_label))
+    print(t)
   }
   
 }
   
-
+#加上五个人以下不要这个组
 ```
 
 
