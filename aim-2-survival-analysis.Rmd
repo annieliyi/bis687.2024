@@ -48,14 +48,6 @@ for(event in events){
   print(kable_table)}
 ```
 
-```{r,fig.width=12, fig.height=15 }
-for(event in events){
-  for(feature in features){
-  print(plot_km(event, feature, scd_data_yr3_label))
-  }
-}
-
-```
 
 ```{r}
 summarytbl<-summary_table(events, scd_data_yr3_label)
@@ -69,3 +61,12 @@ kable_table <- kable(expanded_df, caption = paste("Selected features for differe
 print(kable_table)
 ```
 
+
+```{r,fig.width=12, fig.height=15 }
+for(event in events){
+  for(feature in features){
+  print(plot_km(event, feature, scd_data_yr3_label))
+  }
+}
+
+```

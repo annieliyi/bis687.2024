@@ -211,7 +211,7 @@ summary_table_wide <- function(events, scd_data_yr3_label){
   for (i in 1:nrow(original_data)) {
     features_in_event <- trimws(strsplit(original_data$Features, split = ",")[[i]])
     for (feature in unique_features) {
-      expanded_df[i, feature] <- ifelse(feature %in% features_in_event, "Y", "N")
+      expanded_df[i, feature] <- ifelse(feature %in% features_in_event, "Y", " ")
     }
   }
   
