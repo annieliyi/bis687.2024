@@ -15,9 +15,9 @@ library(knitr)
 library(purrr)
 
 # var_full <- readRDS("processed_meta.rds")
-scd_data_yr3_label <- readRDS(file.path(getwd(),"processed_scd_data.rds"))
+scd_data_yr3_label <- readRDS(file.path(getwd(),"../processed_scd_data.rds"))
 # naming_vec <- readRDS("var_labels.RDS")
-df_lst <- readRDS(file.path(getwd(),"categorized_dfsubset.RDS"))
+#df_lst <- readRDS(file.path(getwd(),"../categorized_dfsubset.RDS"))
 
 #time to events variables:
 #INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV,death
