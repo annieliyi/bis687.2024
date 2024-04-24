@@ -27,212 +27,45 @@ library(survival)
 library(glmnet)
 library(boot)
 library(survminer)
+library(knitr)
 ```
 
-# read dataset
-```{r}
-# var_full <- readRDS("processed_meta.rds")
+```{r }
 scd_data_yr3_label <- readRDS("processed_scd_data.rds")
 # naming_vec <- readRDS("var_labels.RDS")
 df_lst <- readRDS("categorized_dfsubset.RDS")
-
-#time to events variables:
-#INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV,death
-columns_to_check <-toupper(c("intxsurv", "intxgf", "intxanc", "intxplatelet", "intxagvhd", "intxcgvhd", "intxptld", "intxscdmal", "intxintub", "intxvod", "intxtma", "intxadial", "intxckd", "intxarrhyth", "intxchf", "intxinfap", "intxhtn", "intxdvt", "intxcns", "intxenc", "intxneuro", "intxseiz", "intxstroke", "intxdiab", "intxghd", "intxhypo", "intxpanc", "intxgod", "intxcyst", "intxavn", "intxosteo", "intxdepr", "intxanx", "intxptsd", "intxcata", "intxhylip", "intxiron", "intxmucos", "intxothorgsp"))
-#dataset_column_names <- colnames(scd_data_yr3)
-
-#columns_exist <- columns_to_check %in% dataset_column_names
-
-#existing_columns <- columns_to_check[columns_exist]
-#print(existing_columns)
-#columns_exist_meta <- tolower(existing_columns)
-#time_to_event <- meta_yr3[which(meta_yr3$`Variable name` %in% columns_exist_meta),]
-```
-
-# SURVIVAL ANALYSIS
-
-# preparing data set
-```{r}
-# event && event occurance
-# convert DEAD, GF, EFS, ANC, PLATELET, AGVHD, CGVHD, SCDMAL_FINAL to 0/1
-scd_data_yr3_label$DEAD <- ifelse(scd_data_yr3_label$DEAD=='Alive', 0,1)
-scd_data_yr3_label$GF <- ifelse(scd_data_yr3_label$GF=='No', 0,1)
-scd_data_yr3_label$EFS <- ifelse(scd_data_yr3_label$EFS=='No event', 0,1)
-scd_data_yr3_label$ANC <- ifelse(scd_data_yr3_label$ANC=='Yes', 1,0)
-scd_data_yr3_label$PLATELET <- ifelse(scd_data_yr3_label$PLATELET=='Yes', 1,0)
-scd_data_yr3_label$AGVHD <- ifelse(scd_data_yr3_label$AGVHD=='No', 0,1)
-scd_data_yr3_label$CGVHD <- ifelse(scd_data_yr3_label$CGVHD=='No', 0,1)
-scd_data_yr3_label$SCDMAL_FINAL <- ifelse((scd_data_yr3_label$SCDMAL_FINAL=='None' & scd_data_yr3_label$SCDMAL_FINAL=='Not Reported'), 0,1)
-
-#total features: RCMVPR, SEX, ETHNICIT, DONORF, GRAFTYPE, YEARTX, AGE, AGEGPFF, KPS, HCTCIGPF, SUBDIS1F, ATGF, YEARGPF, GVHD_FINAL, CONDGRPF, CONDGRP_FINAL, HLA_FINAL, FLAG_LANCET, FLAG_BLOOD
-## add race
-## 
+getwd()
+source("R/survival.R")
+events <- c('DEAD', 'GF', 'EFS', 'ANC', 'PLATELET', 'AGVHD', 'CGVHD', 'SCDMAL_FINAL')
+features <- c('RCMVPR', 'SEX', 'ETHNICIT', 'DONORF', 'GRAFTYPE', 'YEARTX', 'AGE', 'AGEGPFF', 'KPS', 'HCTCIGPF', 'SUBDIS1F', 'ATGF', 'YEARGPF', 'GVHD_FINAL', 'CONDGRPF', 'CONDGRP_FINAL', 'HLA_FINAL', 'FLAG_LANCET', 'FLAG_BLOOD')
 ```
 
 
 ```{r}
-scd_data_yr3_label <- na.omit(scd_data_yr3_label)
-cox_func <- function(event,scd_data_yr3_label){
-  scd_data_yr3_label <- na.omit(scd_data_yr3_label)
-  time_to_event <- paste0('INTX', event)
-  time_to_event <- ifelse(time_to_event =='INTXDEAD', 'INTXSURV',time_to_event)
-  print(time_to_event)
-  x <- model.matrix(~., data = scd_data_yr3_label[, 2:20])  # excluding time and event columns
-  
-  y <- Surv(scd_data_yr3_label[[time_to_event]], scd_data_yr3_label[[event]])
-  
-  # Fit lasso model
-  fit_lasso <- glmnet(x, y, family = "cox")
-  plot(fit_lasso)
-  cv_fit <- cv.glmnet(x, y, family = "cox")
-  plot(cv_fit)
-  best_lambda <- cv_fit$lambda.min
-  fit_best_lambda <- glmnet(x, y, family = "cox", alpha = 1, lambda = best_lambda)
-
-  # Look at the coefficients
-  coef_best_lambda <- coef(fit_best_lambda)
-  coef_best_lambda <- data.frame(feature = rownames(coef_best_lambda), value = as.numeric(coef_best_lambda[, 1]))
-  names(coef_best_lambda) <- c('feature', "value")
-  return(coef_best_lambda)
-}
-cox_func("DEAD",scd_data_yr3_label)
+for(event in events){
+  coeff_table <- cox_func(event, scd_data_yr3_label)
+  kable_table <- kable(coeff_table, caption = paste("Coefficients of features for", event)) %>% kable_classic(full_width = F, html_font = "Cambria")
+  print(kable_table)}
 ```
 
-```{r, fig.height=18, fig.width=18}
-coefficients_df <- cox_func("DEAD", scd_data_yr3_label)
-
-# Filter out coefficients that are not equal to zero
-selected_features <- coefficients_df[coefficients_df$value != 0, ]$feature
-
-
-scd_data_yr3_label <- na.omit(scd_data_yr3_label)
-event <- "DEAD"
-  time_to_event <- paste0('INTX', event)
-  time_to_event <- ifelse(time_to_event =='INTXDEAD', 'INTXSURV',time_to_event)
-  print(time_to_event)
-  x <- model.matrix(~., data = scd_data_yr3_label[, 2:20])  # excluding time and event columns
-  selected_features <- unlist(selected_features)
-  
-# 步骤1: 分割特征以提取列名和值
-extract_column_name_and_value <- function(feature) {
-  # 使用正则表达式来分割特征
-  # 这个正则表达式假设列名和值之间没有明显的分界，需要根据实际情况调整
-  # RCMVPR, SEX, ETHNICIT, DONORF, GRAFTYPE, YEARTX, AGE, AGEGPFF, KPS, HCTCIGPF, SUBDIS1F, ATGF, YEARGPF, GVHD_FINAL, CONDGRPF, CONDGRP_FINAL, HLA_FINAL, FLAG_LANCET, FLAG_BLOOD
-  if (any(grepl("RCMVPR|SEX|ETHNICIT|DONORF|GRAFTYPE|AGEGPFF|KPS|HCTCIGPF|ATGF|SUBDIS1F|YEARGPF|GVHD_FINAL|CONDGRPF|CONDGRP_FINAL|HLA_FINAL||FLAG_LANCET|FLAG_BLOOD", feature, ignore.case = TRUE))) {
-    parts <- strsplit(feature, "(?<=[A-Z])(?=[A-Z][a-z])|(?<=[a-z])(?=[A-Z])", perl=TRUE)[[1]]
-    column_name <- parts[1]
-    value <- paste(parts[-1], collapse = "")
-    return(list(column_name = column_name, value = value))
-  } else {
-    # 对于不符合上述模式的特征，可能需要另外的逻辑来处理
-    return(list(column_name = NA, value = NA))
+```{r,fig.width=12, fig.height=15 }
+for(event in events){
+  for(feature in features){
+  print(plot_km(event, feature, scd_data_yr3_label))
   }
 }
 
-# 步骤2: 遍历 selected_features，提取列名和值，并确认这些列名和值
-km_features <- c()
-for(feature in selected_features) {
-  result <- extract_column_name_and_value(feature)
-  column_name <- result$column_name
-  value <- result$value
-  if(!is.na(column_name)) {
-    # 检查列名是否存在于 scd_data_yr3_label 中
-    if(column_name %in% names(scd_data_yr3_label)) {
-      # 检查值是否在该列的值集中
-      if(value %in% unique(tolower(scd_data_yr3_label[[column_name]]))) {
-        print(paste("Match found for", column_name, "with value", value))
-      } else {
-        print(paste("Column", column_name, "found, but value", value, "not found"))
-        km_features = c(km_features,column_name )
-      }
-    } else {
-      print(paste("Column", column_name, "not found"))
-    }
-  }
-}
-is.numeric(scd_data_yr3_label$INTXSURV)
-for(i in km_features){
-  if(i %in% c('YEARTX', 'AGE')){
-    
-  }
-  else{
-    p <-ggsurvplot(
-    survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
-            data = scd_data_yr3_label), 
-    pval = FALSE,
-    #onf.int = 0.95,
-    risk.table = TRUE, 
-    risk.table.height = 0.25,
-    font.tickslab = c(size = 10),
-    tables.theme = theme_cleantable(base_size = 7),
-    ggtheme = theme_survminer() ,
-    legend.title = "")
-    print(p)
-    t <- ggsurvtable(survfit(as.formula(paste("Surv(", time_to_event,',',event,") ~", i)), 
-            data = scd_data_yr3_label))
-    print(t)
-  }
-  
-}
-  
-#加上五个人以下不要这个组
 ```
 
-
-
-
-# test bootsrtap
 ```{r}
-scd_data_yr3_label <- na.omit(scd_data_yr3_label)
-event <- "DEAD"
-  time_to_event <- paste0('INTX', event)
-  time_to_event <- ifelse(time_to_event =='INTXDEAD', 'INTXSURV',time_to_event)
-  print(time_to_event)
-  x <- model.matrix(~., data = scd_data_yr3_label[, 2:20])  # excluding time and event columns
-  
-  y <- Surv(scd_data_yr3_label[[time_to_event]], scd_data_yr3_label[[event]])
-  
-  # Fit lasso model
-  fit_lasso <- glmnet(x, y, family = "cox")
-  plot(fit_lasso, label = TRUE)
-  cv_fit <- cv.glmnet(x, y, family = "cox")
-  plot(cv_fit)
-  best_lambda <- cv_fit$lambda.min
-  fit_best_lambda <- glmnet(x, y, family = "cox", alpha = 1, lambda = best_lambda)
+summarytbl<-summary_table(events, scd_data_yr3_label)
+kable_table <- kable(summarytbl, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
+print(kable_table)
+```
 
-  # Look at the coefficients
-  coef_best_lambda <- coef(fit_best_lambda)
-  
-  boot_coefs_cox <- function(original_data, indices) {
-    original_data <- na.omit(original_data)
-    bootstrap_sample <- original_data[indices,]
-    
-    x_bootstrap <- model.matrix(~., data = bootstrap_sample[, -c((ncol(bootstrap_sample)-1):ncol(bootstrap_sample))]) 
-    time_to_event_bootstrap <- as.numeric(bootstrap_sample[, ncol(bootstrap_sample)-1])
-    event_bootstrap <- as.numeric(bootstrap_sample[, ncol(bootstrap_sample)])
-    y_bootstrap <- Surv(time_to_event_bootstrap, event_bootstrap)
-    fit <- cv.glmnet(x_bootstrap, y_bootstrap, family = "cox", alpha = 1)
-    best_lambda <- fit$lambda.min
-    fit_best_lambda <- glmnet(x_bootstrap, y_bootstrap, family = "cox", alpha = 1, lambda = best_lambda)
-
-    # Look at the coefficients
-    coef_best_lambda <- coef(fit_best_lambda)
-    return(as.matrix(coef_best_lambda[-1, , drop = FALSE])) 
-  }
-  # 使用boot函数进行bootstrap
-  results <- boot(data = cbind(scd_data_yr3_label[, 2:20],c(scd_data_yr3_label[[time_to_event]]), scd_data_yr3_label[[event]]), statistic = boot_coefs_cox, R = 100)
-  # 计算置信区间
-  boot.ci(results, type = "bca")
-  point_estimates <- as.numeric(coef(glmnet(x, y, alpha = 1, lambda = best_lambda))[-1])
-  
-  # 整理成表格
-  coefs_ci <- data.frame(
-    Coefficient = rownames(ci$t0),
-    Estimate = point_estimates,
-    CI_Lower = ci$basic[,4],
-    CI_Upper = ci$basic[,5]
-  )
-  # return(coefs_ci)
-
+```{r}
+expanded_df <- summary_table_wide(events, scd_data_yr3_label)
+kable_table <- kable(expanded_df, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
+print(kable_table)
 ```
 
