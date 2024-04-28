@@ -46,9 +46,33 @@ cat_transp_df <- pred_transp_df %>%
 
 
 ```{r}
-cat_test(outcome_df, cat_disease_df)
-cat_test(outcome_df, cat_patient_df)
-cat_test(outcome_df, cat_transp_df)
+dat1 <- cat_test(outcome_df, cat_disease_df)
+dat2 <- cat_test(outcome_df, cat_patient_df)
+dat3 <- cat_test(outcome_df, cat_transp_df)
+
+
+
+dat1[[2]]$Outcome <- naming_vec[tolower(dat1[[2]]$Outcome)]
+dat1[[2]]$Explanatory <- naming_vec[tolower(dat1[[2]]$Explanatory)]
+
+
+
+
+dat2[[2]]$Outcome <- naming_vec[tolower(dat2[[2]]$Outcome)]
+dat2[[2]]$Explanatory <- naming_vec[tolower(dat2[[2]]$Explanatory)]
+
+dat2[[2]] |> filter(Pvalue <= 0.05) |>
+  filter(!str_detect(Explanatory, "Cases from"))
+
+
+
+
+
+dat3[[2]]$Outcome <- naming_vec[tolower(dat3[[2]]$Outcome)]
+dat3[[2]]$Explanatory <- naming_vec[tolower(dat3[[2]]$Explanatory)]
+
+dat3[[2]] |> filter(Pvalue <= 0.05) |>
+  filter(!str_detect(Explanatory, "Cases from"))
 ```
 
 
