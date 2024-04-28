@@ -2,6 +2,7 @@ library(purrr)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(ggplot2)
 
 
 visualize_data <- function(df, id_cols, factor_cols, 
@@ -50,5 +51,5 @@ visualize_data <- function(df, id_cols, factor_cols,
       xlab(label_vec[tolower(var_i)]) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
   })
-  
+  list(cont_plts, cat_plts)
 }
