@@ -28,9 +28,10 @@ visualize_data <- function(df, id_cols, factor_cols,
   cont_plts <- lapply(cont_vars, function(var_i){
     df_i <- df[ , var_i, drop = F]
     
-    ggplot(df_i) + 
+    plot <-ggplot(df_i) + 
       geom_density(aes(x = !!sym(var_i))) + 
       xlab(label_vec[tolower(var_i)])
+    ggsave(plot, filename=file.path('plots', paste0('Distribution for ', var_i, '.png')))
   })
   
   
@@ -42,7 +43,7 @@ visualize_data <- function(df, id_cols, factor_cols,
       group_by(!!sym(var_i)) |>
       summarize(n = n())
     
-    ggplot(df_i) + 
+    plot <- ggplot(df_i) + 
       geom_col(aes(x = !!sym(var_i), y = n))+
       geom_text(aes(x = !!sym(var_i), y = n, 
                     label = n),
@@ -50,6 +51,9 @@ visualize_data <- function(df, id_cols, factor_cols,
                 vjust = 0) +
       xlab(label_vec[tolower(var_i)]) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    ggsave(plot, filename=file.path('plots', paste0('Distribution for ', var_i, '.png')))
   })
+  
+  
   list(cont_plts, cat_plts)
 }
