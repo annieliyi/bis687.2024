@@ -188,7 +188,7 @@ features <- c('RCMVPR', 'SEX', 'ETHNICIT', 'DONORF', 'GRAFTYPE',
 
 
 ui <- fluidPage(
-  titlePanel("Variable Plotter and Data Summaries"),
+  titlePanel("Data Visualization Platform on Post-HCT Outcomes for SCD Patients"),
   sidebarLayout(
     sidebarPanel(
       selectInput("datasetSelect", "Choose a Dataset:", choices = NULL),
@@ -198,18 +198,31 @@ ui <- fluidPage(
     ),
     mainPanel(
       tabsetPanel(
-        tabPanel("Plot", plotOutput("varPlot")),
-        tabPanel("Variable Descriptions", DTOutput("varDescriptions")),
-        tabPanel("Continuous Summary", uiOutput("summaryContTable")),
-        tabPanel("Categorical Summary", uiOutput("summaryCatTable")),
-        tabPanel("Event Coefficients", uiOutput("eventCoefficients")),
-        tabPanel("Event Features Summary", uiOutput("eventFeaturesSummary")),
-        tabPanel("KM Plots", uiOutput("kmPlots"))
+        tabPanel("Variable Distribution Plots", 
+                 helpText("Use the 1st and 2nd inputs."),
+                 plotOutput("varPlot")),
+        tabPanel("Variable Descriptions", 
+                 helpText("No input required."),
+                 DTOutput("varDescriptions")),
+        tabPanel("Outcome Summary", 
+                 helpText("Use the 1st input; utilize the search bar to filter results."),
+                 uiOutput("summaryContTable")),
+        tabPanel("Categorical Variables Summary", 
+                 helpText("Use the 1st and 2nd inputs."),
+                 uiOutput("summaryCatTable")),
+        tabPanel("Event Coefficients", 
+                 helpText("Use the 3rd input only."),
+                 uiOutput("eventCoefficients")),
+        tabPanel("Event Features Summary", 
+                 helpText("Use the 3rd input only."),
+                 uiOutput("eventFeaturesSummary")),
+        tabPanel("Survival Plots", 
+                 helpText("Select an event using the 3rd input, then select a feature with the 4th input."),
+                 uiOutput("kmPlots"))
       )
     )
   )
 )
-
 
 
 
@@ -344,9 +357,6 @@ server <- function(input, output, session) {
   
   
   
-  
-  
-  
   output$kmPlots <- renderUI({
     req(input$eventSelect, input$featureSelect)  # Ensure event and feature are selected
     
@@ -384,6 +394,26 @@ server <- function(input, output, session) {
 
 # Run the application 
 shinyApp(ui = ui, server = server)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

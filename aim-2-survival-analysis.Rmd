@@ -28,6 +28,7 @@ library(glmnet)
 library(boot)
 library(survminer)
 library(knitr)
+library(gtExtras)
 ```
 
 ```{r }
@@ -45,7 +46,9 @@ features <- c('RCMVPR', 'SEX', 'ETHNICIT', 'DONORF', 'GRAFTYPE', 'YEARTX', 'AGE'
 for(event in events){
   coeff_table <- cox_func(event, scd_data_yr3_label)
   kable_table <- kable(coeff_table, caption = paste("Coefficients of features for", event)) %>% kable_classic(full_width = F, html_font = "Cambria")
-  print(kable_table)}
+  print(kable_table)
+  gt::gtsave(gt(coeff_table),  file.path("tables", 
+                                paste0("Coefficients of features for", event, ".png")))}
 ```
 
 
@@ -53,20 +56,26 @@ for(event in events){
 summarytbl<-summary_table(events, scd_data_yr3_label)
 kable_table <- kable(summarytbl, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
 print(kable_table)
+
 ```
 
 ```{r}
 expanded_df <- summary_table_wide(events, scd_data_yr3_label)
 kable_table <- kable(expanded_df, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
-print(kable_table)
+
+gtsave_extra(gt(as.data.frame(t(expanded_df)),rownames_to_stub = TRUE), vwidth = 800, vheight = 6000,file.path("tables", 
+                                paste0("Summary table for selected features.png")), expand = 10)
 ```
 
 
+
 ```{r,fig.width=12, fig.height=15 }
-for(event in events){
-  for(feature in features){
-  print(plot_km(event, feature, scd_data_yr3_label))
+#for(event in events){
+event = 'DEAD'
+for(feature in features){
+  plot_km(event, feature, scd_data_yr3_label)
+  
   }
-}
+#}
 
 ```
