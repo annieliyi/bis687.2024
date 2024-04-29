@@ -45,7 +45,9 @@ features <- c('RCMVPR', 'SEX', 'ETHNICIT', 'DONORF', 'GRAFTYPE', 'YEARTX', 'AGE'
 for(event in events){
   coeff_table <- cox_func(event, scd_data_yr3_label)
   kable_table <- kable(coeff_table, caption = paste("Coefficients of features for", event)) %>% kable_classic(full_width = F, html_font = "Cambria")
-  print(kable_table)}
+  print(kable_table)
+  gt::gtsave(gt(coeff_table),  file.path("tables", 
+                                paste0("Coefficients of features for", event, ".png")))}
 ```
 
 
@@ -53,20 +55,26 @@ for(event in events){
 summarytbl<-summary_table(events, scd_data_yr3_label)
 kable_table <- kable(summarytbl, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
 print(kable_table)
+
 ```
 
 ```{r}
 expanded_df <- summary_table_wide(events, scd_data_yr3_label)
 kable_table <- kable(expanded_df, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
 print(kable_table)
+gt::gtsave(gt(expanded_df),  file.path("tables", 
+                                paste0("Summary table for selected features.png")))
 ```
 
 
+
 ```{r,fig.width=12, fig.height=15 }
-for(event in events){
-  for(feature in features){
-  print(plot_km(event, feature, scd_data_yr3_label))
+#for(event in events){
+event = 'DEAD'
+for(feature in features){
+  plot_km(event, feature, scd_data_yr3_label)
+  
   }
-}
+#}
 
 ```
