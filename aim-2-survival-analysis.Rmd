@@ -28,6 +28,7 @@ library(glmnet)
 library(boot)
 library(survminer)
 library(knitr)
+library(gtExtras)
 ```
 
 ```{r }
@@ -61,9 +62,9 @@ print(kable_table)
 ```{r}
 expanded_df <- summary_table_wide(events, scd_data_yr3_label)
 kable_table <- kable(expanded_df, caption = paste("Selected features for different events")) %>% kable_classic(full_width = F, html_font = "Cambria")
-print(kable_table)
-gt::gtsave(gt(expanded_df),  file.path("tables", 
-                                paste0("Summary table for selected features.png")))
+
+gtsave_extra(gt(as.data.frame(t(expanded_df)),rownames_to_stub = TRUE), vwidth = 800, vheight = 6000,file.path("tables", 
+                                paste0("Summary table for selected features.png")), expand = 10)
 ```
 
 
