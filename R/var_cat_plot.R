@@ -11,6 +11,22 @@ cat_plot <- function(out_df, exp_df, label_vec){
         out_df[, out_i], 
         exp_df[, disease_i]
         )
+
+      if(out_i == "AGEGPFF"){
+        plot_df[[1]] <- factor(plot_df[[1]], 
+                                levels = c("<=10", 
+                                           "11-17", "18-29",
+                                           "30-49",
+                                           ">=50" ))
+      }
+      
+      if(disease_i == "AGEGPFF"){
+        plot_df[[2]] <- factor(plot_df[[2]], 
+                                       levels = c("<=10", 
+                                                  "11-17", "18-29",
+                                                  "30-49",
+                                                  ">=50" ))
+      }
       
       colnames(plot_df) <- c(out_i, disease_i)
       

@@ -1,0 +1,2777 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs} - \usepackage{longtable}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={aim1\_outcome\_exp},
+  pdfauthor={Wanjing Chen},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{aim1\_outcome\_exp}
+\author{Wanjing Chen}
+\date{2024-04-08}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(stringr)}
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{var\_full }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"processed\_meta.rds"}\NormalTok{)}
+\NormalTok{scd\_data\_yr3\_label }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"cleaned\_scd\_data.rds"}\NormalTok{)}
+\NormalTok{naming\_vec }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"var\_labels.RDS"}\NormalTok{)}
+\NormalTok{df\_lst }\OtherTok{\textless{}{-}} \FunctionTok{readRDS}\NormalTok{(}\StringTok{"cleaned\_categorized\_dfsubset.RDS"}\NormalTok{)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"R/var\_cat\_test.R"}\NormalTok{)}
+\FunctionTok{source}\NormalTok{(}\StringTok{"R/var\_cat\_plot.R"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{outcome\_df }\OtherTok{\textless{}{-}}\NormalTok{ df\_lst}\SpecialCharTok{$}\NormalTok{Outcomes }\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{select\_at}\NormalTok{(}\FunctionTok{vars}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{starts\_with}\NormalTok{(}\StringTok{"INT"}\NormalTok{)))}
+
+\NormalTok{pred\_disease\_df }\OtherTok{\textless{}{-}}\NormalTok{ df\_lst}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Disease{-}related}\StringTok{\textasciigrave{}}
+\NormalTok{pred\_patient\_df }\OtherTok{\textless{}{-}}\NormalTok{ df\_lst}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Patient{-}related}\StringTok{\textasciigrave{}}
+\NormalTok{pred\_transp\_df }\OtherTok{\textless{}{-}}\NormalTok{ df\_lst}\SpecialCharTok{$}\StringTok{\textasciigrave{}}\AttributeTok{Tranplant{-}related}\StringTok{\textasciigrave{}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cat\_disease\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_disease\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{!}\FunctionTok{is.numeric}\NormalTok{(.)))}
+  
+\NormalTok{cat\_patient\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_patient\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{!}\FunctionTok{is.numeric}\NormalTok{(.)), }
+         \SpecialCharTok{{-}}\NormalTok{DUMMYID)}
+
+\NormalTok{cat\_transp\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_transp\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{!}\FunctionTok{is.numeric}\NormalTok{(.)),}
+\NormalTok{         YEARTX)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1 }\OtherTok{\textless{}{-}} \FunctionTok{cat\_test}\NormalTok{(outcome\_df, cat\_disease\_df)}
+\NormalTok{dat2 }\OtherTok{\textless{}{-}} \FunctionTok{cat\_test}\NormalTok{(outcome\_df, cat\_patient\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat3 }\OtherTok{\textless{}{-}} \FunctionTok{cat\_test}\NormalTok{(outcome\_df, cat\_transp\_df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+
+## Warning in chisq.test(tbl, correct = F): Chi-squared approximation may be
+## incorrect
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat1[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat1[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome)]}
+\NormalTok{dat1[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat1[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory)]}
+
+
+
+
+\NormalTok{dat2[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat2[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome)]}
+\NormalTok{dat2[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat2[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory)]}
+
+\NormalTok{dat2[[}\DecValTok{2}\NormalTok{]] }\SpecialCharTok{|\textgreater{}} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{p\_adj =} \FunctionTok{p.adjust}\NormalTok{(Pvalue, }\StringTok{"fdr"}\NormalTok{))}\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(p\_adj }\SpecialCharTok{\textless{}=} \FloatTok{0.05}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \CommentTok{\#filter(Pvalue \textless{}= 0.05) |\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{str\_detect}\NormalTok{(Explanatory, }\StringTok{"Cases from"}\NormalTok{)) }\SpecialCharTok{|\textgreater{}}
+\NormalTok{  knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.5263}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.2632}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0614}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0614}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0877}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Outcome
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Explanatory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pvalue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p\_adj
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Survival status at last contact & Age Categories (Years) & Fisher & 0 &
+0.0000000 \\
+Event-free survival (Graft failure or death are the events) & Age
+Categories (Years) & Fisher & 0.005 & 0.0484615 \\
+Death without graft failure & Age Categories (Years) & Fisher & 0.001 &
+0.0105000 \\
+Death without acute graft versus host disease, grades II-IV & Age
+Categories (Years) & Fisher & 0.001 & 0.0105000 \\
+Death without chronic graft-vs-host disease & Age Categories (Years) &
+Fisher & 0.001 & 0.0105000 \\
+Secondary malignancy & Age Categories (Years) & Fisher & 0 &
+0.0000000 \\
+Secondary malignancy & Karnofsky/Lansky score at HCT & Fisher & 0.001 &
+0.0105000 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat3[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat3[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Outcome)]}
+\NormalTok{dat3[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory }\OtherTok{\textless{}{-}}\NormalTok{ naming\_vec[}\FunctionTok{tolower}\NormalTok{(dat3[[}\DecValTok{2}\NormalTok{]]}\SpecialCharTok{$}\NormalTok{Explanatory)]}
+
+\NormalTok{dat3[[}\DecValTok{2}\NormalTok{]] }\SpecialCharTok{|\textgreater{}} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{p\_adj =} \FunctionTok{p.adjust}\NormalTok{(Pvalue, }\StringTok{"fdr"}\NormalTok{))}\SpecialCharTok{|\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(p\_adj }\SpecialCharTok{\textless{}=} \FloatTok{0.05}\NormalTok{) }\SpecialCharTok{|\textgreater{}}
+  \CommentTok{\#filter(Pvalue \textless{}= 0.05) |\textgreater{}}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{str\_detect}\NormalTok{(Explanatory, }\StringTok{"Cases from"}\NormalTok{))}\SpecialCharTok{|\textgreater{}}
+\NormalTok{  knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.4082}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.4286}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0476}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0476}}
+  >{\raggedleft\arraybackslash}p{(\columnwidth - 8\tabcolsep) * \real{0.0680}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Outcome
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Explanatory
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Method
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pvalue
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+p\_adj
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Survival status at last contact & Donor type & Chisq & 0 & 0.0000000 \\
+Survival status at last contact & Year of Translplant (Year) & Fisher &
+0.016 & 0.0439216 \\
+Event-free survival (Graft failure or death are the events) & Donor type
+& Chisq & 0 & 0.0000000 \\
+Event-free survival (Graft failure or death are the events) & Graft type
+& Chisq & 0 & 0.0000000 \\
+Event-free survival (Graft failure or death are the events) &
+Conditioning intensity & Chisq & 0.006 & 0.0204878 \\
+Event-free survival (Graft failure or death are the events) &
+Conditioning regimen & Fisher & 0 & 0.0000000 \\
+Event-free survival (Graft failure or death are the events) & GVHD
+prophylaxis & Fisher & 0.001 & 0.0042424 \\
+Event-free survival (Graft failure or death are the events) &
+Donor-recipient HLA matching & Chisq & 0 & 0.0000000 \\
+Event-free survival (Graft failure or death are the events) & Year of
+Transplant Categories (Year) & Fisher & 0 & 0.0000000 \\
+Event-free survival (Graft failure or death are the events) & Year of
+Translplant (Year) & Fisher & 0.001 & 0.0042424 \\
+Graft failure & Donor type & Chisq & 0 & 0.0000000 \\
+Graft failure & Graft type & Chisq & 0 & 0.0000000 \\
+Graft failure & Conditioning intensity & Chisq & 0 & 0.0000000 \\
+Graft failure & Conditioning regimen & Fisher & 0 & 0.0000000 \\
+Graft failure & GVHD prophylaxis & Fisher & 0 & 0.0000000 \\
+Graft failure & Donor-recipient HLA matching & Chisq & 0 & 0.0000000 \\
+Graft failure & Year of Transplant Categories (Year) & Fisher & 0.009 &
+0.0273913 \\
+Graft failure & Year of Translplant (Year) & Fisher & 0.005 &
+0.0179487 \\
+Death without graft failure & Donor type & Chisq & 0 & 0.0000000 \\
+Neutrophil engraftment & Donor type & Fisher & 0.004 & 0.0155556 \\
+Neutrophil engraftment & Graft type & Fisher & 0.005 & 0.0179487 \\
+Neutrophil engraftment & Donor-recipient HLA matching & Fisher & 0.006 &
+0.0204878 \\
+Platelet recovery & Donor type & Chisq & 0 & 0.0000000 \\
+Platelet recovery & Graft type & Chisq & 0.008 & 0.0254545 \\
+Platelet recovery & Conditioning intensity & Fisher & 0.001 &
+0.0042424 \\
+Platelet recovery & Conditioning regimen & Fisher & 0 & 0.0000000 \\
+Platelet recovery & GVHD prophylaxis & Fisher & 0.018 & 0.0484615 \\
+Platelet recovery & Donor-recipient HLA matching & Chisq & 0 &
+0.0000000 \\
+Death without platelet recovery & Donor type & Fisher & 0 & 0.0000000 \\
+Acute graft versus host disease, grades II-IV & Donor type & Chisq & 0 &
+0.0000000 \\
+Acute graft versus host disease, grades II-IV & Graft type & Chisq & 0 &
+0.0000000 \\
+Acute graft versus host disease, grades II-IV & Conditioning intensity &
+Chisq & 0.009 & 0.0273913 \\
+Acute graft versus host disease, grades II-IV & Conditioning regimen &
+Fisher & 0.001 & 0.0042424 \\
+Acute graft versus host disease, grades II-IV & ATG/Alemtuzumab given as
+conditioning regimen/GVHD prophylaxis & Chisq & 0 & 0.0000000 \\
+Acute graft versus host disease, grades II-IV & GVHD prophylaxis &
+Fisher & 0.012 & 0.0336000 \\
+Acute graft versus host disease, grades II-IV & Donor-recipient HLA
+matching & Chisq & 0 & 0.0000000 \\
+Acute graft versus host disease, grades II-IV & Recipient CMV serostatus
+& Chisq & 0.012 & 0.0336000 \\
+Death without acute graft versus host disease, grades II-IV & Donor type
+& Fisher & 0.008 & 0.0254545 \\
+Chronic graft-vs-host disease & Donor type & Chisq & 0 & 0.0000000 \\
+Chronic graft-vs-host disease & Graft type & Chisq & 0.001 &
+0.0042424 \\
+Chronic graft-vs-host disease & Conditioning intensity & Chisq & 0 &
+0.0000000 \\
+Chronic graft-vs-host disease & Conditioning regimen & Fisher & 0 &
+0.0000000 \\
+Chronic graft-vs-host disease & ATG/Alemtuzumab given as conditioning
+regimen/GVHD prophylaxis & Chisq & 0.005 & 0.0179487 \\
+Chronic graft-vs-host disease & GVHD prophylaxis & Fisher & 0 &
+0.0000000 \\
+Death without chronic graft-vs-host disease & Donor type & Chisq & 0 &
+0.0000000 \\
+Death without chronic graft-vs-host disease & Graft type & Fisher & 0.01
+& 0.0291667 \\
+Post-transplant lymphoproliferative disorder (PTLD) & GVHD prophylaxis &
+Fisher & 0 & 0.0000000 \\
+Secondary malignancy & Graft type & Fisher & 0.01 & 0.0291667 \\
+Secondary malignancy & Conditioning intensity & Fisher & 0 &
+0.0000000 \\
+Secondary malignancy & Conditioning regimen & Fisher & 0.003 &
+0.0123529 \\
+Secondary malignancy & GVHD prophylaxis & Fisher & 0.004 & 0.0155556 \\
+Secondary malignancy & Donor-recipient HLA matching & Fisher & 0.008 &
+0.0254545 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat\_plot}\NormalTok{(outcome\_df, cat\_disease\_df, naming\_vec)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [[1]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-2.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-3.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-4.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-5.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-6.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-7.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[8]]
+## [[8]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-8.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[9]]
+## [[9]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-9.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[10]]
+## [[10]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-10.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[11]]
+## [[11]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-11.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[12]]
+## [[12]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-12.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[13]]
+## [[13]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-13.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[14]]
+## [[14]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-14.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat\_plot}\NormalTok{(outcome\_df, cat\_patient\_df, naming\_vec)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [[1]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-15.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-16.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-17.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-18.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-19.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-20.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-21.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-22.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-23.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-24.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-25.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-26.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-27.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-28.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-29.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-30.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-31.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-32.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-33.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-34.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-35.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-36.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-37.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-38.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-39.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-40.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-41.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-42.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-43.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-44.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-45.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-46.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-47.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-48.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-49.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-50.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-51.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-52.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-53.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-54.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-55.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-56.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-57.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-58.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-59.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-60.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-61.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-62.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-63.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-64.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-65.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-66.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-67.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-68.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-69.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-70.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-71.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-72.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-73.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-74.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-75.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-76.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-77.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[8]]
+## [[8]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-78.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-79.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-80.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-81.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-82.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-83.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-84.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-85.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-86.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[9]]
+## [[9]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-87.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-88.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-89.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-90.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-91.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-92.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-93.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-94.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-95.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[10]]
+## [[10]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-96.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-97.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-98.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-99.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-100.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-101.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-102.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-103.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-104.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[11]]
+## [[11]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-105.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-106.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-107.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-108.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-109.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-110.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-111.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-112.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-113.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[12]]
+## [[12]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-114.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-115.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-116.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-117.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-118.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-119.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-120.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-121.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-122.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[13]]
+## [[13]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-123.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-124.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-125.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-126.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-127.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-128.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-129.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-130.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-131.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[14]]
+## [[14]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-132.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-133.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-134.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-135.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-136.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-137.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-138.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-139.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-140.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat\_plot}\NormalTok{(outcome\_df, cat\_transp\_df, naming\_vec)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [[1]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-141.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-142.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-143.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-144.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-145.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-146.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-147.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-148.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-149.pdf}
+
+\begin{verbatim}
+## 
+## [[1]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-150.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-151.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-152.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-153.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-154.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-155.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-156.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-157.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-158.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-159.pdf}
+
+\begin{verbatim}
+## 
+## [[2]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-160.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-161.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-162.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-163.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-164.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-165.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-166.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-167.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-168.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-169.pdf}
+
+\begin{verbatim}
+## 
+## [[3]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-170.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-171.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-172.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-173.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-174.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-175.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-176.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-177.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-178.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-179.pdf}
+
+\begin{verbatim}
+## 
+## [[4]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-180.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-181.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-182.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-183.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-184.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-185.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-186.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-187.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-188.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-189.pdf}
+
+\begin{verbatim}
+## 
+## [[5]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-190.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-191.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-192.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-193.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-194.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-195.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-196.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-197.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-198.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-199.pdf}
+
+\begin{verbatim}
+## 
+## [[6]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-200.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-201.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-202.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-203.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-204.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-205.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-206.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-207.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-208.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-209.pdf}
+
+\begin{verbatim}
+## 
+## [[7]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-210.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[8]]
+## [[8]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-211.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-212.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-213.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-214.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-215.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-216.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-217.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-218.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-219.pdf}
+
+\begin{verbatim}
+## 
+## [[8]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-220.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[9]]
+## [[9]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-221.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-222.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-223.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-224.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-225.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-226.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-227.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-228.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-229.pdf}
+
+\begin{verbatim}
+## 
+## [[9]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-230.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[10]]
+## [[10]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-231.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-232.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-233.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-234.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-235.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-236.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-237.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-238.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-239.pdf}
+
+\begin{verbatim}
+## 
+## [[10]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-240.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[11]]
+## [[11]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-241.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-242.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-243.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-244.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-245.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-246.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-247.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-248.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-249.pdf}
+
+\begin{verbatim}
+## 
+## [[11]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-250.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[12]]
+## [[12]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-251.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-252.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-253.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-254.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-255.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-256.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-257.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-258.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-259.pdf}
+
+\begin{verbatim}
+## 
+## [[12]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-260.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[13]]
+## [[13]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-261.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-262.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-263.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-264.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-265.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-266.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-267.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-268.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-269.pdf}
+
+\begin{verbatim}
+## 
+## [[13]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-270.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[14]]
+## [[14]][[1]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-271.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-272.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[3]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-273.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[4]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-274.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[5]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-275.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[6]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-276.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[7]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-277.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[8]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-278.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[9]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-279.pdf}
+
+\begin{verbatim}
+## 
+## [[14]][[10]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-6-280.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{num\_disease\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_disease\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \FunctionTok{is.numeric}\NormalTok{(.)))}
+  
+\NormalTok{num\_patient\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_patient\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \FunctionTok{is.numeric}\NormalTok{(.)), }
+         \SpecialCharTok{{-}}\NormalTok{DUMMYID)}
+
+\NormalTok{num\_transp\_df }\OtherTok{\textless{}{-}}\NormalTok{ pred\_transp\_df }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\FunctionTok{where}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \FunctionTok{is.numeric}\NormalTok{(.)), }
+         \SpecialCharTok{{-}}\NormalTok{YEARTX) }\CommentTok{\#YEARTX should be seen as categorical}
+
+
+\NormalTok{num\_df }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(outcome\_df, }
+\NormalTok{                num\_patient\_df)}
+
+
+\FunctionTok{lapply}\NormalTok{(}\FunctionTok{colnames}\NormalTok{(outcome\_df), }\ControlFlowTok{function}\NormalTok{(out\_i)\{}
+\NormalTok{  dt }\OtherTok{\textless{}{-}}\NormalTok{ num\_df[ , }\FunctionTok{c}\NormalTok{(out\_i, }\StringTok{"AGE"}\NormalTok{)]}
+
+\NormalTok{  ret1 }\OtherTok{\textless{}{-}}\NormalTok{ dt }\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{group\_by}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(out\_i))}\SpecialCharTok{|\textgreater{}}
+    \FunctionTok{summarize}\NormalTok{(}\AttributeTok{Total\_num =} \FunctionTok{n}\NormalTok{(),}
+              \AttributeTok{Avg\_age =} \FunctionTok{mean}\NormalTok{(AGE), }
+              \AttributeTok{Med\_age =} \FunctionTok{median}\NormalTok{(AGE))}
+
+  
+\NormalTok{  ret2 }\OtherTok{\textless{}{-}} \FunctionTok{ggplot}\NormalTok{(dt) }\SpecialCharTok{+} 
+    \FunctionTok{geom\_density}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ AGE, }\AttributeTok{fill =} \SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(out\_i)), }
+                 \AttributeTok{alpha =} \FloatTok{0.3}\NormalTok{) }
+  
+  \FunctionTok{list}\NormalTok{(ret1, ret2)}
+\NormalTok{\})}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [[1]]
+## [[1]][[1]]
+## # A tibble: 2 x 4
+##   DEAD  Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 Alive      1074    14.2      12
+## 2 Dead         74    18.8      17
+## 
+## [[1]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## # A tibble: 2 x 4
+##   EFS            Total_num Avg_age Med_age
+##   <chr>              <int>   <dbl>   <dbl>
+## 1 Event happened       259    16.7      15
+## 2 No event             889    13.9      12
+## 
+## [[2]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-2.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[3]]
+## [[3]][[1]]
+## # A tibble: 2 x 4
+##   GF    Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No          948    14.1      12
+## 2 Yes         200    16.4      14
+## 
+## [[3]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-3.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[4]]
+## [[4]][[1]]
+## # A tibble: 2 x 4
+##   DWOGF Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No         1089    14.4      12
+## 2 Yes          59    17.7      17
+## 
+## [[4]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-4.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[5]]
+## [[5]][[1]]
+## # A tibble: 2 x 4
+##   ANC   Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No           14    13.6      10
+## 2 Yes        1134    14.5      12
+## 
+## [[5]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-5.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[6]]
+## [[6]][[1]]
+## # A tibble: 2 x 4
+##   DWOANC Total_num Avg_age Med_age
+##   <chr>      <int>   <dbl>   <dbl>
+## 1 No          1147    14.5      12
+## 2 Yes            1    45        45
+## 
+## [[6]][[2]]
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Groups with fewer than two data points have been dropped.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-6.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[7]]
+## [[7]][[1]]
+## # A tibble: 2 x 4
+##   PLATELET Total_num Avg_age Med_age
+##   <chr>        <int>   <dbl>   <dbl>
+## 1 No              46    13.9      12
+## 2 Yes           1102    14.6      12
+## 
+## [[7]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-7.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[8]]
+## [[8]][[1]]
+## # A tibble: 2 x 4
+##   DWOPLATELET Total_num Avg_age Med_age
+##   <chr>           <int>   <dbl>   <dbl>
+## 1 No               1134    14.5      12
+## 2 Yes                14    19.7      17
+## 
+## [[8]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-8.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[9]]
+## [[9]][[1]]
+## # A tibble: 2 x 4
+##   AGVHD Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No          985    14.4      12
+## 2 Yes         163    15.5      13
+## 
+## [[9]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-9.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[10]]
+## [[10]][[1]]
+## # A tibble: 2 x 4
+##   DWOAGVHD Total_num Avg_age Med_age
+##   <chr>        <int>   <dbl>   <dbl>
+## 1 No            1114    14.3      12
+## 2 Yes             34    22.1      19
+## 
+## [[10]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-10.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[11]]
+## [[11]][[1]]
+## # A tibble: 2 x 4
+##   CGVHD Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No          902    14.5      12
+## 2 Yes         246    14.8      13
+## 
+## [[11]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-11.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[12]]
+## [[12]][[1]]
+## # A tibble: 2 x 4
+##   DWOCGVHD Total_num Avg_age Med_age
+##   <chr>        <int>   <dbl>   <dbl>
+## 1 No            1106    14.3    12  
+## 2 Yes             42    21.2    18.5
+## 
+## [[12]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-12.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[13]]
+## [[13]][[1]]
+## # A tibble: 2 x 4
+##   PTLD  Total_num Avg_age Med_age
+##   <chr>     <int>   <dbl>   <dbl>
+## 1 No         1136    14.6    12.5
+## 2 Yes          12    10       9.5
+## 
+## [[13]][[2]]
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-13.pdf}
+
+\begin{verbatim}
+## 
+## 
+## [[14]]
+## [[14]][[1]]
+## # A tibble: 8 x 4
+##   SCDMAL_FINAL                               Total_num Avg_age Med_age
+##   <chr>                                          <int>   <dbl>   <dbl>
+## 1 Acute lymphoblastic leukemia                       2    29        29
+## 2 Acute myelogenous leukemia                         3    23.3      20
+## 3 Clonal cytogenetic abnormality: monosomy 7         1    56        56
+## 4 Kaposi sarcoma                                     1    11        11
+## 5 Myofibroblastic tumor                              1    37        37
+## 6 None                                            1138    14.4      12
+## 7 Sarcoma                                            1    42        42
+## 8 TP53 mutation                                      1    37        37
+## 
+## [[14]][[2]]
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Groups with fewer than two data points have been dropped.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Groups with fewer than two data points have been dropped.
+## Groups with fewer than two data points have been dropped.
+## Groups with fewer than two data points have been dropped.
+## Groups with fewer than two data points have been dropped.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+
+## Warning in max(ids, na.rm = TRUE): no non-missing arguments to max; returning
+## -Inf
+\end{verbatim}
+
+\includegraphics{aim1_outcome_exp_files/figure-latex/unnamed-chunk-7-14.pdf}
+
+\end{document}
