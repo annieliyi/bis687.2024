@@ -46,14 +46,12 @@ visualize_data <- function(df, id_cols, factor_cols,
                                               "11-17", "18-29",
                                               "30-49",
                                               ">=50" ))
-      print(df_i[[var_i]])
+      #print(df_i[[var_i]])
     }
     else{
-      df_i <- df_i |>
-        group_by(!!sym(var_i)) |>
-        summarize(n = n())
+      df_i <- df[ , var_i, drop = F]
     }
-    df_i <- df[ , var_i, drop = F]
+    
     
     df_i <- df_i |>
       group_by(!!sym(var_i)) |>
