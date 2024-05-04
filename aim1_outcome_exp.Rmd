@@ -3,11 +3,18 @@ title: "aim1_outcome_exp"
 author: "Wanjing Chen"
 date: "2024-04-08"
 output:
-  word_document: default
-  html_document: default
   pdf_document: default
+  html_document: default
+  word_document: default
 header-includes: "\\usepackage{booktabs} - \\usepackage{longtable}"
 ---
+
+```{r}
+library(stringr)
+library(dplyr)
+library(ggplot2)
+library(knitr)
+```
 
 
 ```{r}
@@ -61,8 +68,12 @@ dat1[[2]]$Explanatory <- naming_vec[tolower(dat1[[2]]$Explanatory)]
 dat2[[2]]$Outcome <- naming_vec[tolower(dat2[[2]]$Outcome)]
 dat2[[2]]$Explanatory <- naming_vec[tolower(dat2[[2]]$Explanatory)]
 
-dat2[[2]] |> filter(Pvalue <= 0.05) |>
-  filter(!str_detect(Explanatory, "Cases from"))
+dat2[[2]] |> mutate(p_adj = p.adjust(Pvalue, "fdr"))|>
+  filter(p_adj <= 0.05) |>
+  #filter(Pvalue <= 0.05) |>
+  filter(!str_detect(Explanatory, "Cases from")) |>
+#  nrow()
+  knitr::kable()
 
 
 
@@ -71,8 +82,13 @@ dat2[[2]] |> filter(Pvalue <= 0.05) |>
 dat3[[2]]$Outcome <- naming_vec[tolower(dat3[[2]]$Outcome)]
 dat3[[2]]$Explanatory <- naming_vec[tolower(dat3[[2]]$Explanatory)]
 
-dat3[[2]] |> filter(Pvalue <= 0.05) |>
-  filter(!str_detect(Explanatory, "Cases from"))
+dat3[[2]] |> mutate(p_adj = p.adjust(Pvalue, "fdr"))|>
+  filter(p_adj <= 0.05) |>
+  #filter(Pvalue <= 0.05) |>
+  filter(!str_detect(Explanatory, "Cases from"))|>
+ # nrow()
+  knitr::kable() 
+
 ```
 
 

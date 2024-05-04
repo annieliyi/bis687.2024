@@ -98,7 +98,8 @@ summarize_data <- function(df, id_cols, factor_cols,
     
     gt::gtsave(ret2, file.path("tables", 
                                paste0(tbl_name,
-                                      "_Cat_Sum.png")))
+                                      "_Cat_Sum.png")),
+               expand = 40)
     
   }
   return(list(ret1, ret2))

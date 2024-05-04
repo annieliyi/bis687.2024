@@ -15,7 +15,7 @@ library(knitr)
 library(purrr)
 
 # var_full <- readRDS("processed_meta.rds")
-scd_data_yr3_label <- readRDS(file.path(getwd(),"../processed_scd_data.rds"))
+scd_data_yr3_label <- readRDS(file.path(getwd(),"processed_scd_data.rds"))
 # naming_vec <- readRDS("var_labels.RDS")
 #df_lst <- readRDS(file.path(getwd(),"../categorized_dfsubset.RDS"))
 
@@ -28,7 +28,7 @@ scd_data_yr3_label <- readRDS(file.path(getwd(),"../processed_scd_data.rds"))
 #INTXAGVHD, INTXCGVHD, INTXSCDMAL, INTXANC, INTXPLA_TELET, INTXGF, INTXSURV, INTXPYLD
 scd_data_yr3_label$DEAD <- ifelse(scd_data_yr3_label$DEAD=='Alive', 0,1)
 scd_data_yr3_label$GF <- ifelse(scd_data_yr3_label$GF=='No', 0,1)
-scd_data_yr3_label$EFS <- ifelse(scd_data_yr3_label$EFS=='No event', 0,1)
+scd_data_yr3_label$PTLD <- ifelse(scd_data_yr3_label$PTLD=='No event', 0,1)
 scd_data_yr3_label$ANC <- ifelse(scd_data_yr3_label$ANC=='Yes', 1,0)
 scd_data_yr3_label$PLATELET <- ifelse(scd_data_yr3_label$PLATELET=='Yes', 1,0)
 scd_data_yr3_label$AGVHD <- ifelse(scd_data_yr3_label$AGVHD=='No', 0,1)
